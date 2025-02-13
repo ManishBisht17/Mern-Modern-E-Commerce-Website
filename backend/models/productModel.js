@@ -1,25 +1,60 @@
-import mongoose  from "mongoose";
+import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required : [true , 'please enter your name '],
-        max:[20 , 'max length is 20 character'],
-        min: [2 , ' min length is 2 character']
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+    min: 0,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  brand: {
+    type: String,
+    required: true,
+  },
+  stock: {
+    type: Number,
+    required: true,
+    min: 0,
+  },
+  images: [
+    {
+      url: String,
+      public_id: String,
     },
-    productType:{
-        type:String,
-        required:[true , 'please enter your product type'],
-        max:[20,'max length is 20 character'],
-        min: [2 , 'min length is 2 character']
-        
+  ],
+  ratings: {
+    type: Number,
+    default: 0,
+  },
+  numReviews: {
+    type: Number,
+    default: 0,
+  },
+  reviews: [
+    {
+      user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      rating: { type: Number, required: true },
+      comment: { type: String, required: true },
     },
-    productPrice:{
-        type: Number,
-        required: [true ,'please enter your price ']
-    },
-})
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
-const product = mongoose.model('product', productSchema)
+const product = mongoose.model("Product", productSchema);
 
 export default product;
