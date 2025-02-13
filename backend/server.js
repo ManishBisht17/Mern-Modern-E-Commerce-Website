@@ -3,9 +3,6 @@ import app from "./app.js";
 import bodyParser from 'body-parser'
 import mongodb from './db/db.js'
 
-
-
-
 const server = express();
 server.use(express.json());
 
