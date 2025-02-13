@@ -1,40 +1,16 @@
 import axios from "axios";
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { BaseUrl } from "../config";
+import { Link } from "react-router-dom";
 
-interface signuptype{
-    name:string;
-    email:string;
-    password:string;
-    gender:string;
-    phone:number;
-}
 
 const Signup = () => {
     const [name,setName]=useState("")
     const [email,setEmail]=useState("")
     const [password,setPassword]=useState("")
-    const [gender,setGender]=useState("")
+    const [gender,setGender]=useState("male")
     const [phone,setPhone]=useState<number>()
 
-
-    console.log(name,email,password,gender,phone    )
-
-    useEffect(()=>{
-         axios.post(`${BaseUrl}/user/signup`,{
-            name,
-            email,
-            password,
-            gender,
-            phone
-        })
-        .then((res)=>{
-            console.log(res)
-        })
-        .catch((err)=>{
-            console.log(err)
-        })
-    },[])
 
   return (
     <div className="h-screen w-full flex justify-center items-center">
@@ -93,19 +69,20 @@ const Signup = () => {
             phone
         })
         .then((res)=>{
-            console.log(res)
+            console.log(res.data.message)
         })
         .catch((err)=>{
             console.log(err)
         })
-    }} className="mt-4 w-full rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
+    }} 
+    className="mt-4 w-full rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
       Sign Up
     </button>
     <p className="flex justify-center mt-6 text-sm text-slate-600">
-      Don&apos;t have an account?
-      <a href="#signup" className="ml-1 text-sm font-semibold text-slate-700 underline">
-        Sign up
-      </a>
+      Already, have an account?
+      <Link to="/signin" className="ml-1 text-sm font-semibold text-slate-700 underline">
+        Sign in
+      </Link>
     </p>
   </form>
 </div>
