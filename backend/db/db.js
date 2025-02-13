@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
+import dotenv from 'dotenv';
+dotenv.config();
 const mongodb = async() =>{
-const url = 'mongodb+srv://manisbst123:U2Qov7xMfpYEkPZc@cluster0.e5ofn.mongodb.net/Practice_database?retryWrites=true&w=majority';
+const url = process.env.DB_URL;
 
 mongoose.connect(url)
     .then(() => {
