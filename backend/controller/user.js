@@ -58,7 +58,7 @@ export const Userlogin = async (req, res) => {
       });
     }
     res.status(200).json({
-      mesage: "User Login Successfully ",
+      message: "User Login Successfully ",
       data: user,
     });
   } catch (error) {
@@ -70,6 +70,7 @@ export const deleteUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
+
     const matchPassword = await bcrypt.compare(password, user.password);
     if (!user) {
       return res.status(400).json({
@@ -83,14 +84,11 @@ export const deleteUser = async (req, res) => {
       });
     }
     if (matchPassword) {
-      return res.status(401).json({
-        message: "Invalid password",
+      await User.deleteOne(user);
+      return res.status(204).json({
+        message: "user deleted successfully",
       });
     }
-    await User.deleteOne({ _id: user._id });
-    return res.status(204).json({
-      message: "user deleted successfully",
-    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
