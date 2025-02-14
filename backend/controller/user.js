@@ -1,17 +1,36 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
+// JWT Secret Key
+const JWT_SECRET = process.env.JWT_SECRET_KEY;
 
-// Signup route handler
+// Authentication Middleware
+export const authMiddleware = (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized: No token provided" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    res.status(401).json({ message: "Invalid token" });
+  }
+};
+
+// Signup Route
 export const signup = async (req, res) => {
   try {
-    // Create a new user in the database
     const { name, email, password, gender, phone } = req.body;
 
-    // Generate a salt and hash the password before saving
+    // Hash Password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create a new user with the hashed password
     const newUser = new User({
       name,
       email,
@@ -20,81 +39,120 @@ export const signup = async (req, res) => {
       phone,
     });
     await newUser.save();
+    const token = jwt.sign({ id: req._id, email: req.email }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 1000, // 1 hour
+    });
     res.status(201).json({
       message: "New User Account Created Successfully",
       data: newUser,
     });
   } catch (err) {
-    // Handle errors
     console.error(err);
-    res.status(500).send({
-      message: "Error creating user",
-      error: err.message,
-    });
+    res
+      .status(500)
+      .json({ message: "Error creating user", error: err.message });
   }
 };
 
+// User Login
 export const Userlogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({
-        message: `email and password is required`,
-      });
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
     }
 
     const user = await User.findOne({ email }).select("+password");
     if (!user) {
-      return res.status(400).json({
-        message: "user does not exist please signup first ",
-      });
+      return res
+        .status(400)
+        .json({ message: "User does not exist, please signup first" });
     }
+
     const matchPassword = await bcrypt.compare(password, user.password);
     if (!matchPassword) {
-      return res.status(401).json({
-        message: "Invalid email or password",
-      });
+      return res.status(401).json({ message: "Invalid email or password" });
     }
+
+    // Generate JWT Token
+    const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 1000, // 1 hour
+    });
+
     res.status(200).json({
-      data: user,
+      message: "User Logged In Successfully",
+      token,
     });
   } catch (error) {
-    console.log(error, "Error in UserLogin ");
+    console.log("Error in User Login:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
+//User Logout
+export const logout = async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).json({ message: "No user is logged in" });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true, // Recommended for production (HTTPS only)
+      sameSite: "strict",
+    });
+
+    res.status(200).json({
+      data: user.name,
+      message: `${user.name} Logged Out Successfully`,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error logging out", error: error.message });
+  }
+};
+
+// Delete User
 export const deleteUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    const matchPassword = await bcrypt.compare(password, user.password);
+
     if (!user) {
-      return res.status(400).json({
-        message: "user does not exist",
-      });
+      return res.status(400).json({ message: "User does not exist" });
     }
 
-    if (email !== user.email) {
-      return res.status(401).json({
-        message: "Invalid email",
-      });
-    }
-    if (matchPassword) {
-      return res.status(401).json({
-        message: "Invalid password",
-      });
+    const matchPassword = await bcrypt.compare(password, user.password);
+    if (!matchPassword) {
+      return res.status(401).json({ message: "Invalid password" });
     }
     await User.deleteOne({ _id: user._id });
-    return res.status(204).json({
-      message: "user deleted successfully",
-    });
+
+    res.status(204).json({ message: "User deleted successfully" });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Server error",
-      error: error.message,
-    });
+    console.log("Error deleting user:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
