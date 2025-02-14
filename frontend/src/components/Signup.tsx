@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react"
 import { BaseUrl } from "../config";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const Signup = () => {
@@ -11,7 +11,7 @@ const Signup = () => {
     const [gender,setGender]=useState("male")
     const [phone,setPhone]=useState<number>()
 
-
+    const navigate = useNavigate()
   return (
     <div className="h-screen w-full flex justify-center items-center">
     <div className="relative flex flex-col rounded-xl bg-transparent">
@@ -69,7 +69,12 @@ const Signup = () => {
             phone
         })
         .then((res)=>{
-            console.log(res.data.mesage)
+            if(!res.data){
+              navigate("/signup")
+            }else{
+              localStorage.setItem("token",res.data?.token)
+              navigate("/home")
+            }
         })
         .catch((err)=>{
             console.log(err)
