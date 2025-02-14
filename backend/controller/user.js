@@ -48,19 +48,19 @@ export const signup = async (req, res) => {
       { id: newUser._id, email: newUser.email },
       JWT_SECRET,
       {
-        expiresIn: "1h",
+        expiresIn: "24d",
       }
     );
 
     // Store token in a cookie
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: 60 * 60 * 1000, // 1 hour
+      maxAge: 60 * 60 * 1000 * 28, // 28 days
     });
 
     res.status(201).json({
       message: "New User Account Created Successfully",
-      token, // Return the token in response
+      token,
       data: newUser,
     });
   } catch (err) {
