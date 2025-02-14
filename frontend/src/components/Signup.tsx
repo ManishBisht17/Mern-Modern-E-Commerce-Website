@@ -69,13 +69,13 @@ const Signup = () => {
             phone
         })
         .then((res)=>{
-            console.log(res.data.message)
+            console.log(res.data.mesage)
         })
         .catch((err)=>{
             console.log(err)
         })
     }} 
-    className="mt-4 w-full rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
+    className="active:scale-95 mt-4 w-full rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
       Sign Up
     </button>
     <p className="flex justify-center mt-6 text-sm text-slate-600">
