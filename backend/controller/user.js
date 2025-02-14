@@ -23,6 +23,7 @@ export const authMiddleware = (req, res, next) => {
 };
 
 // Signup Route
+
 export const signup = async (req, res) => {
   try {
     const { name, email, password, gender, phone } = req.body;
@@ -31,6 +32,7 @@ export const signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    // Create the user
     const newUser = new User({
       name,
       email,
@@ -38,17 +40,27 @@ export const signup = async (req, res) => {
       gender,
       phone,
     });
-    await newUser.save();
-    const token = jwt.sign({ id: req._id, email: req.email }, JWT_SECRET, {
-      expiresIn: "1h",
-    });
 
+    await newUser.save();
+
+    // Generate JWT Token
+    const token = jwt.sign(
+      { id: newUser._id, email: newUser.email },
+      JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    // Store token in a cookie
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 60 * 60 * 1000, // 1 hour
     });
+
     res.status(201).json({
       message: "New User Account Created Successfully",
+      token, // Return the token in response
       data: newUser,
     });
   } catch (err) {
@@ -89,7 +101,7 @@ export const Userlogin = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: 60 * 60 * 1000, // 1 hour
+      maxAge: 60 * 60 * 1000 * 24 * 28, // 28 days hour
     });
 
     res.status(200).json({
@@ -119,7 +131,7 @@ export const logout = async (req, res) => {
 
     res.clearCookie("token", {
       httpOnly: true,
-      secure: true, // Recommended for production (HTTPS only)
+      secure: true,
       sameSite: "strict",
     });
 
