@@ -26,7 +26,7 @@ export const authMiddleware = (req, res, next) => {
 
 export const signup = async (req, res) => {
   try {
-    const { name, email, password, gender, phone } = req.body;
+    const { name, email, password, phone } = req.body;
 
     // Hash Password
     const salt = await bcrypt.genSalt(10);
@@ -37,7 +37,6 @@ export const signup = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      gender,
       phone,
     });
 

@@ -21,10 +21,6 @@ const userSchema = new mongoose.Schema(
       type: Number,
       required: [true, "please enter you mobile number"],
     },
-    gender: {
-      type: String,
-      required: [true, "please enter"],
-    },
   },
   { timestamps: true }
 );
