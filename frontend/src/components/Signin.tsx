@@ -47,7 +47,7 @@ const Signin = () => {
                   password,
                 })
                 .then((res) => {
-                  if (!res.data) {
+                  if (!res.data.token) {
                     navigate("/signin");
                   } else {
                     localStorage.setItem("token", res.data?.token);
