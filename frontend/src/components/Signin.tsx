@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div className="h-screen w-full flex justify-center items-center">
       <div className="relative flex flex-col rounded-xl bg-transparent">
@@ -41,19 +41,20 @@ const Signin = () => {
 
           <button
             onClick={() => {
-              axios.post(`${BaseUrl}/user/login`, {
+              axios
+                .post(`${BaseUrl}/user/login`, {
                   email,
                   password,
                 })
                 .then((res) => {
-                  if(!res.data){
-                    navigate("/signin")
-                  }else{
-                    localStorage.setItem("token",res.data?.token)
-                    navigate("/home")
+                  if (!res.data) {
+                    navigate("/signin");
+                  } else {
+                    localStorage.setItem("token", res.data?.token);
+                    navigate("/home");
                   }
-                  setEmail("")
-                  setPassword("")
+                  setEmail("");
+                  setPassword("");
                 })
                 .catch((err) => {
                   console.log(err);
