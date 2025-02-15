@@ -1,9 +1,12 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IoCartSharp } from "react-icons/io5";
 import { FaUserLarge } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
+import WomenDropdown from "../utils/WomenDropdown";
+import MenDropdown from "../utils/MenDropdown";
+import AccessoriesDropDown from "../utils/AccessoriesDropDown";
 
 const Nav = () => {
   const searchRef = useRef<HTMLInputElement>(null);
@@ -38,22 +41,22 @@ const Nav = () => {
               <div
                 className={`hidden md:flex space-x-8 ${isSearchOpen ? "hidden" : "flex"}`}
               >
-                <Link
-                  to="#"
+                <h2
                   className="text-sm font-medium hover:text-gray-600"
                 >
-                  WOMEN
-                </Link>
-                <a href="#" className="text-sm font-medium hover:text-gray-600">
-                  MEN
-                </a>
+                  <WomenDropdown/>
+                </h2>
+
+                <h2
+                 className="text-sm font-medium hover:text-gray-600">
+                  <MenDropdown/>
+                </h2>
                 
-                <Link
-                  to="#"
+                <h2
                   className="text-sm font-medium hover:text-gray-600"
                 >
-                  ACCESSARY
-                </Link>
+                  <AccessoriesDropDown/>
+                </h2>
               </div>
 
               {isSearchOpen && (
