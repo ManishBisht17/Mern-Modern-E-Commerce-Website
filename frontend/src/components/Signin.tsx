@@ -7,6 +7,28 @@ const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate()
+
+  const handleClick = () => {
+      axios.post(`${BaseUrl}/user/login`, {
+          email,
+          password,
+        })
+        .then((res) => {
+          if(!res.data.token){
+            navigate("/signin")
+          }else{
+            localStorage.setItem("token",res.data?.token)
+            navigate("/")
+          }
+          setEmail("")
+          setPassword("")
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  
+
   return (
     <div className="h-screen w-full flex justify-center items-center">
       <div className="relative flex flex-col rounded-xl bg-transparent">
@@ -40,25 +62,7 @@ const Signin = () => {
           </div>
 
           <button
-            onClick={() => {
-              axios.post(`${BaseUrl}/user/login`, {
-                  email,
-                  password,
-                })
-                .then((res) => {
-                  if(!res.data.token){
-                    navigate("/signin")
-                  }else{
-                    localStorage.setItem("token",res.data?.token)
-                    navigate("/home")
-                  }
-                  setEmail("")
-                  setPassword("")
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            }}
+            onClick={handleClick}
             className="active:scale-95 mt-4 w-full rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
             type="button"
           >
