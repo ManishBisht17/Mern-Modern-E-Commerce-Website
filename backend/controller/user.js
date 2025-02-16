@@ -23,7 +23,6 @@ export const authMiddleware = (req, res, next) => {
 };
 
 // Signup Route
-
 export const signup = async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
@@ -47,7 +46,7 @@ export const signup = async (req, res) => {
       { id: newUser._id, email: newUser.email },
       JWT_SECRET,
       {
-        expiresIn: "24d",
+        expiresIn: "28d",
       }
     );
 
@@ -71,7 +70,7 @@ export const signup = async (req, res) => {
 };
 
 // User Login
-export const Userlogin = async (req, res) => {
+export const userlogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -95,7 +94,7 @@ export const Userlogin = async (req, res) => {
 
     // Generate JWT Token
     const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, {
-      expiresIn: "1h",
+      expiresIn: "28d",
     });
 
     res.cookie("token", token, {

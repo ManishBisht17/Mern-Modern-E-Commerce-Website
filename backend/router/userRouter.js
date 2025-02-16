@@ -1,7 +1,7 @@
 import express from "express";
 import {
   signup,
-  Userlogin,
+  userlogin,
   deleteUser,
   logout,
   authMiddleware,
@@ -11,7 +11,7 @@ const router = express.Router();
 
 // USER ALL ROUTES
 router.post("/signup", signup);
-router.post("/login", Userlogin);
+router.post("/login", userlogin);
 router.delete("/delete", authMiddleware, deleteUser);
 router.post("/logout", logout);
 
