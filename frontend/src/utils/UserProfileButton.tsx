@@ -31,10 +31,8 @@ const UserProfileButton = () => {
             </Link>
           </li>
           <li>
-            <Link 
-            onClick={() => {
+            <Link onClick={() => {
                     localStorage.removeItem("token");
-                    navigate("/signin");
                   }} 
                   to="/" className="block px-4 py-2 text-sm hover:bg-gray-100">
               Logout
