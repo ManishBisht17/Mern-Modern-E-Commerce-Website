@@ -6,7 +6,12 @@ const productSchema = new mongoose.Schema(
     description: { type: String },
     type: { type: String },
     price: { type: Number, required: true },
-    imageUrl: { type: String, required: true },
+    imageUrl: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
     stock: { type: Number, default: 0 },
     category: { type: String, required: true },
     brand: { type: String },
@@ -17,7 +22,12 @@ const productSchema = new mongoose.Schema(
         rating: { type: Number, required: true },
         comment: { type: String },
       },
-    ], // Array of reviews
+    ],
+    barcode: { type: String, unique: true },
+
+    barcodeImageUrl: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
