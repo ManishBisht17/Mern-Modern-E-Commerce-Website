@@ -1,6 +1,9 @@
-import { createProduct } from './../controller/product.js'
-import express from 'express';
+import express from "express";
+import { createProduct } from "../controller/product.js"; // Ensure the correct path
 
 const router = express.Router();
-router.post('/productCreate',createProduct);
+
+// Upload Product Image Route
+router.post("/upload", createProduct);
+
 export default router;
