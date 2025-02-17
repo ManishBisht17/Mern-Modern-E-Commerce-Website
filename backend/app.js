@@ -7,11 +7,10 @@ import fileUpload from "express-fileupload";
 
 const app = express();
 
-// Middleware Order Matters!
 app.use(cors());
 app.use(cookieParser());
-app.use(express.json()); // Parse JSON bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Configure fileUpload AFTER other parsers
 app.use(
