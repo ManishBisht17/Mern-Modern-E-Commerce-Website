@@ -3,14 +3,26 @@ import userRouter from "./router/userRouter.js";
 import productRouter from "./router/productRoute.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import fileUpload from "express-fileupload";
 
 const app = express();
 
-app.use(cookieParser());
+// Middleware Order Matters!
 app.use(cors());
-app.use(express.json());
+app.use(cookieParser());
+app.use(express.json()); // Parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 
-//Routers
+// Configure fileUpload AFTER other parsers
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "./tmp/",
+    createParentPath: true,
+  })
+);
+
+// Routes
 app.use("/user", userRouter);
 app.use("/product", productRouter);
 

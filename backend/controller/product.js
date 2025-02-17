@@ -1,42 +1,70 @@
-import cloudinary from "../cloudinary/cloudinaryUpload.js";
+import Product from "../models/productModel.js";
+import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
-import Product from "../models/productModel.js"; // Make sure this is correct
 
 dotenv.config();
 
-// Upload Product Image & Save to DB
-export const uploadProductImage = async (req, res) => {
+// Cloudinary Configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
+
+export const createProduct = async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
+    // Validate if file exists
+    if (!req.files || !req.files.photo) {
+      return res.status(400).json({
+        message: "Please upload a photo",
+      });
     }
 
-    // Upload image to Cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      resource_type: "image",
-      folder: "products",
-    });
+    const file = req.files.photo;
 
-    // Create Product with Image URL
-    const newProduct = new Product({
-      name: req.body.name,
-      description: req.body.description,
-      type: req.body.type,
-      price: req.body.price,
-      imageUrl: result.secure_url, // Saving Cloudinary Image URL
-    });
+    cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
+      if (err) {
+        return res.status(400).json({
+          message: "Photo uploading error",
+          error: err,
+        });
+      }
 
-    await newProduct.save();
+      try {
+        const newProduct = new Product({
+          name: req.body.name,
+          description: req.body.description,
+          type: req.body.type,
+          price: req.body.price,
+          stock: req.body.stock,
+          category: req.body.category,
+          brand: req.body.brand,
+          imageUrl: result.url,
+          ratings: req.body.ratings,
+          reviews: req.body.reviews,
+        });
 
-    res.status(201).json({
-      message: "Product created successfully with image",
-      product: newProduct,
+        const savedProduct = await newProduct.save();
+        res.status(201).json({
+          success: true,
+          message: "Product created successfully",
+          product: savedProduct,
+        });
+      } catch (saveError) {
+        console.error("Save error:", saveError);
+        res.status(400).json({
+          success: false,
+          message: "Error saving product",
+          error: saveError.message,
+        });
+      }
     });
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error("Full error:", error);
     res.status(500).json({
-      message: "Error uploading image and saving product",
-      error: err.message,
+      success: false,
+      message: "Error creating product",
+      error: error.message,
     });
   }
 };
