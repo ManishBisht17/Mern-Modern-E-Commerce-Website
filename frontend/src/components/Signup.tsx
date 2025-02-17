@@ -23,7 +23,7 @@ const Signup = () => {
             navigate("/signup");
           } else {
             localStorage.setItem("token", res.data?.token);
-            navigate("/home");
+            navigate("/");
           }
         })
         .catch(() => {

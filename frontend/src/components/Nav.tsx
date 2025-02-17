@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoCartSharp } from "react-icons/io5";
 import { FaUserLarge } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";
@@ -34,7 +34,7 @@ const Nav = () => {
 
   return (
     <>
-      <header className="w-full fixed z-50 bg-white ">
+      <header className="w-full h-16 top-0 left-0 right-0 fixed z-50 bg-white ">
         <nav className="border-b border-gray-200">
           <div className=" md:max-w-7xl mx-auto px-4">
             <div className="flex justify-between items-center h-16">
@@ -82,9 +82,9 @@ const Nav = () => {
                   isSearchOpen ? "hidden" : "flex"
                 }`}
               >
-                <a href="/" className="text-xl font-serif">
+                <Link to="/" className="text-xl font-serif">
                   500 . Co
-                </a>
+                </Link>
               </div>
 
               <div className="flex items-center gap-6">
@@ -97,7 +97,7 @@ const Nav = () => {
                 <button className="hover:text-gray-600">
                   <FaUserLarge size={20} />
                 </button>
-                <button className="hover:text-gray-600 relative">
+                <button onClick={()=>navigate("/cart")} className="hover:text-gray-600 relative">
                   <IoCartSharp size={20} />
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                     0
