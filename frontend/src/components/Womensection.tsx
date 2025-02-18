@@ -24,7 +24,7 @@ const Womensection = () => {
           <h1 className="my-16 text-center text-4xl">EXPLORE</h1>
           <div className="w-[80vw] h-full mx-auto flex flex-wrap " >
             
-            <ProductCard title={"shorts for summer"} category={'short'} img={"https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvcnRzfGVufDB8fDB8fHww"} />
+            <ProductCard id={1} gender={'womens'} title={"shorts for summer"} category={'short'} img={"https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvcnRzfGVufDB8fDB8fHww"} />
            
           </div>
         </div>

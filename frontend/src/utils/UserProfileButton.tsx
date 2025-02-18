@@ -1,10 +1,11 @@
+import { FaUserLarge } from "react-icons/fa6";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { IoIosArrowDown } from "react-icons/io";
 
-const WomenDropdown = () => {
+const UserProfileButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate()
+
   return (
     <div
       className="relative group"
@@ -12,13 +13,10 @@ const WomenDropdown = () => {
       onMouseLeave={() => window.innerWidth > 768 && setIsOpen(false)}
     >
       <button
-        onClick={() => {
-           window.innerWidth <= 768 && setIsOpen(!isOpen)
-           navigate("/womens")} 
-          }
+        onClick={()=>navigate("/profile")}
         className="text-sm font-medium hover:text-gray-600 flex items-center gap-1"
       >
-        WOMEN <IoIosArrowDown size={14} />
+         <FaUserLarge size={14} />
       </button>
 
       <div
@@ -28,23 +26,16 @@ const WomenDropdown = () => {
       >
         <ul className="py-2">
           <li>
-            <Link to="/women/dresses" className="block px-4 py-2 text-sm hover:bg-gray-100">
-              Dresses
+            <Link to="" className="block px-4 py-2 text-sm hover:bg-gray-100">
+              profile
             </Link>
           </li>
           <li>
-            <Link to="/women/tops" className="block px-4 py-2 text-sm hover:bg-gray-100">
-              Tops
-            </Link>
-          </li>
-          <li>
-            <Link to="/women/shoes" className="block px-4 py-2 text-sm hover:bg-gray-100">
-              Shoes
-            </Link>
-          </li>
-          <li>
-            <Link to="/women/accessories" className="block px-4 py-2 text-sm hover:bg-gray-100">
-              Accessories
+            <Link onClick={() => {
+                    localStorage.removeItem("token");
+                  }} 
+                  to="/" className="block px-4 py-2 text-sm hover:bg-gray-100">
+              Logout
             </Link>
           </li>
         </ul>
@@ -53,4 +44,6 @@ const WomenDropdown = () => {
   );
 };
 
-export default WomenDropdown;
+
+
+export default UserProfileButton;
