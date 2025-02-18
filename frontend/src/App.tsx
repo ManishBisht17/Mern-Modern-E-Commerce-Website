@@ -4,6 +4,7 @@ import Signup from "./components/Signup";
 import {Routes,Route} from "react-router-dom"
 import Womensection from "./components/Womensection";
 import AddToBag from "./components/AddToBag";
+import ProductDetailView from "./components/ProductDetailView";
 function App() {
 
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/cart" element={<AddToBag />} />
           <Route path="/womens" element={<Womensection />} />
+          <Route path="/item/product/:id" element={<ProductDetailView />} />
         </Routes>
   );
 }
