@@ -1,5 +1,5 @@
 import express from "express";
-import { createProduct } from "../controller/product.js"; // Ensure the correct path
+import { createProduct } from "../controller/product.js";
 
 const router = express.Router();
 

@@ -1,6 +1,8 @@
 import Product from "../models/productModel.js";
 import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
+import JsBarcode from "jsbarcode";
+import { createCanvas } from "canvas";
 
 dotenv.config();
 
@@ -11,6 +13,25 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
+// Function to generate a barcode image and upload it to Cloudinary
+const generateAndUploadBarcode = async (barcodeValue) => {
+  const canvas = createCanvas();
+  JsBarcode(canvas, barcodeValue, {
+    format: "CODE128", // Barcode format
+    displayValue: true, // Show the barcode value below the barcode
+  });
+
+  // Convert the canvas to a data URL
+  const barcodeDataUrl = canvas.toDataURL("image/png");
+
+  // Upload the barcode image to Cloudinary
+  const result = await cloudinary.uploader.upload(barcodeDataUrl, {
+    folder: "barcodes", // Optional: Store barcodes in a specific folder
+  });
+
+  return result.secure_url; // Return the URL of the uploaded barcode image
+};
+
 export const createProduct = async (req, res) => {
   try {
     // Validate if file exists
@@ -20,44 +41,45 @@ export const createProduct = async (req, res) => {
       });
     }
 
-    const file = req.files.photo;
+    // Handle single or multiple files
+    const files = Array.isArray(req.files.photo)
+      ? req.files.photo
+      : [req.files.photo];
+    const imageUrls = [];
 
-    cloudinary.uploader.upload(file.tempFilePath, async (err, result) => {
-      if (err) {
-        return res.status(400).json({
-          message: "Photo uploading error",
-          error: err,
-        });
-      }
+    // Upload all files to Cloudinary
+    for (const file of files) {
+      const result = await cloudinary.uploader.upload(file.tempFilePath);
+      imageUrls.push(result.url);
+    }
 
-      try {
-        const newProduct = new Product({
-          name: req.body.name,
-          description: req.body.description,
-          type: req.body.type,
-          price: req.body.price,
-          stock: req.body.stock,
-          category: req.body.category,
-          brand: req.body.brand,
-          imageUrl: result.url,
-          ratings: req.body.ratings,
-          reviews: req.body.reviews,
-        });
+    // Generate a unique barcode value (e.g., product ID or SKU)
+    const barcodeValue = `PROD-${Date.now()}`;
 
-        const savedProduct = await newProduct.save();
-        res.status(201).json({
-          success: true,
-          message: "Product created successfully",
-          product: savedProduct,
-        });
-      } catch (saveError) {
-        console.error("Save error:", saveError);
-        res.status(400).json({
-          success: false,
-          message: "Error saving product",
-          error: saveError.message,
-        });
-      }
+    // Generate and upload the barcode image
+    const barcodeUrl = await generateAndUploadBarcode(barcodeValue);
+
+    // Create and save the product
+    const newProduct = new Product({
+      name: req.body.name,
+      description: req.body.description,
+      type: req.body.type,
+      price: req.body.price,
+      stock: req.body.stock,
+      category: req.body.category,
+      brand: req.body.brand,
+      imageUrl: imageUrls,
+      barcode: barcodeValue,
+      barcodeImageUrl: barcodeUrl,
+      ratings: req.body.ratings,
+      reviews: req.body.reviews,
+    });
+
+    const savedProduct = await newProduct.save();
+    res.status(201).json({
+      success: true,
+      message: "Product created successfully",
+      product: savedProduct,
     });
   } catch (error) {
     console.error("Full error:", error);
