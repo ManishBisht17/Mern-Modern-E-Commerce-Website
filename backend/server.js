@@ -3,8 +3,8 @@ import app from "./app.js";
 import { configDotenv } from "dotenv";
 configDotenv();
 
-import mongodb from "./db/db.js";
-const PORT = process.env.PORT || 5001; // Change to a different port
+import mongodb from "./dataBase/db.js";
+const PORT = process.env.PORT || 5001;
 const server = express();
 server.use(express.json());
 

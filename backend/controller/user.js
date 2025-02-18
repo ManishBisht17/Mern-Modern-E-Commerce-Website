@@ -7,19 +7,28 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET_KEY;
 
 // Authentication Middleware
-export const authMiddleware = (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) {
-    return res.status(401).json({ message: "Unauthorized: No token provided" });
+export const authMiddleware = async (req, res, next) => {
+  const authHeadher = req.headers["authorization"];
+
+  if (!authHeadher || !authHeadher.startsWith("Bearer ")) {
+    return res.status(401).json({
+      message: "Unauthorized : No token provided",
+    });
   }
 
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+  const token = authHeadher.split(" ")[1];
+  jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ message: "Invalid or expired token " });
+    }
     req.user = decoded;
+    res.status(200).json({
+      message: true,
+      data: decoded,
+    });
+
     next();
-  } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
-  }
+  });
 };
 
 // Signup Route

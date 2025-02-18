@@ -12,7 +12,8 @@ const router = express.Router();
 // USER ALL ROUTES
 router.post("/signup", signup);
 router.post("/login", userlogin);
-router.delete("/delete", authMiddleware, deleteUser);
-router.post("/logout", logout);
+router.delete("/delete", deleteUser);
+router.post("/logout", authMiddleware, logout);
+router.get("/protected-route", authMiddleware);
 
 export default router;
