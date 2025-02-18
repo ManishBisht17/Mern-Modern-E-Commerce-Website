@@ -4,7 +4,7 @@ import ProductImgCard from "../utils/ProductImgCard";
 import OptionImgCard from "../utils/OptionImgCard";
 import SizeSelectorBox from "../utils/SizeSelectorBox";
 import {  useState } from "react";
-import { Star } from "lucide-react";
+import { RatingStar } from "../constant/IconFile";
 
 
 const ProductDetailView = () => {
@@ -49,11 +49,11 @@ const ProductDetailView = () => {
 
             <div className="flex justify-between items-center ">
               <div className="flex relative">
-                <Star className="fill-yellow-400 text-yellow-400" />
-                <Star className="fill-yellow-400 text-yellow-400" />
-                <Star className="fill-yellow-400 text-yellow-400" />
-                <Star className="fill-yellow-400 text-yellow-400" />
-                <Star />
+                <RatingStar className="fill-yellow-400 text-yellow-400" />
+                <RatingStar className="fill-yellow-400 text-yellow-400" />
+                <RatingStar className="fill-yellow-400 text-yellow-400" />
+                <RatingStar className="fill-yellow-400 text-yellow-400" />
+                <RatingStar className="text-yellow-400" />
               </div>
               <div className="text-4xl font-light flex gap-4 ">
                 $199{" "}
