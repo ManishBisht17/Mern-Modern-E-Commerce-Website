@@ -1,12 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { IoCartSharp } from "react-icons/io5";
-import { FaUserLarge } from "react-icons/fa6";
 import { IoIosSearch } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import WomenDropdown from "../utils/WomenDropdown";
 import MenDropdown from "../utils/MenDropdown";
 import AccessoriesDropDown from "../utils/AccessoriesDropDown";
+import UserProfileButton from "../utils/UserProfileButton";
 
 const Nav = () => {
   const searchRef = useRef<HTMLInputElement>(null);
@@ -94,24 +94,16 @@ const Nav = () => {
                 >
                   <IoIosSearch size={20} />
                 </button>
-                <button className="hover:text-gray-600">
-                  <FaUserLarge size={20} />
-                </button>
+                
+                <UserProfileButton/>
+
                 <button onClick={()=>navigate("/cart")} className="hover:text-gray-600 relative">
                   <IoCartSharp size={20} />
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                     0
                   </span>
                 </button>
-                <button
-                  onClick={() => {
-                    localStorage.removeItem("token");
-                    navigate("/signin");
-                  }}
-                  className="hover:text-zinc-100 hover:bg-zinc-600 transition-all duration-150 border p-1 rounded-full"
-                >
-                  Logout
-                </button>
+                
               </div>
             </div>
           </div>
