@@ -12,14 +12,13 @@ const productSchema = new mongoose.Schema(
         required: true,
       },
     ],
-    stock: { type: Number, default: 0 },
+    stock: { type: String, default: "full" },
     category: { type: String, required: true },
     brand: { type: String },
     ratings: { type: Number, default: 0 },
     reviews: [
       {
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        rating: { type: Number, required: true },
         comment: { type: String },
       },
     ],
@@ -29,6 +28,7 @@ const productSchema = new mongoose.Schema(
       type: String,
     },
   },
+
   { timestamps: true }
 );
 

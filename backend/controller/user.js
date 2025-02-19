@@ -8,26 +8,23 @@ const JWT_SECRET = process.env.JWT_SECRET_KEY;
 
 // Authentication Middleware
 export const authMiddleware = async (req, res, next) => {
-  const authHeadher = req.headers["authorization"];
+  const token = req.cookies.token;
 
-  if (!authHeadher || !authHeadher.startsWith("Bearer ")) {
-    return res.status(401).json({
-      message: "Unauthorized : No token provided",
-    });
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized: No token provided" });
   }
 
-  const token = authHeadher.split(" ")[1];
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
     if (err) {
-      return res.status(403).json({ message: "Invalid or expired token " });
+      return res.status(403).json({ message: "Invalid or expired token" });
     }
-    req.user = decoded;
+
+    req.user = decoded; // Store decoded token data in req.user
+    next();
     res.status(200).json({
       message: true,
-      data: decoded,
+      decoded,
     });
-
-    next();
   });
 };
 
@@ -154,6 +151,7 @@ export const logout = async (req, res) => {
 };
 
 // Delete User
+//? PENDING FOR CLEAR TOKEN FROM THE USER
 export const deleteUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -168,7 +166,11 @@ export const deleteUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid password" });
     }
     await User.deleteOne({ _id: user._id });
-
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    });
     res.status(204).json({ message: "User deleted successfully" });
   } catch (error) {
     console.log("Error deleting user:", error);
