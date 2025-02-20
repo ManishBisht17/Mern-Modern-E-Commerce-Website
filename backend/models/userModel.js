@@ -21,6 +21,11 @@ const userSchema = new mongoose.Schema(
       type: Number,
       required: [true, "please enter you mobile number"],
     },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
   },
   { timestamps: true }
 );
