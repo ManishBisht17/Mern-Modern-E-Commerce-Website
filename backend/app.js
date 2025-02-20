@@ -4,6 +4,7 @@ import productRouter from "./router/productRoute.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
+import adminRouter from "./router/adminRoute.js";
 
 const app = express();
 
@@ -24,5 +25,6 @@ app.use(
 // Routes
 app.use("/user", userRouter);
 app.use("/product", productRouter);
+app.use("/admin", adminRouter);
 
 export default app;
