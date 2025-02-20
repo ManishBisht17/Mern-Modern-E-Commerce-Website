@@ -151,7 +151,7 @@ export const logout = async (req, res) => {
 };
 
 // Delete User
-//? PENDING FOR CLEAR TOKEN FROM THE USER
+
 export const deleteUser = async (req, res) => {
   try {
     const { email, password } = req.body;
