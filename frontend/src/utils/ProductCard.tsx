@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const ProductCard = ({ img, title, category,id,gender}: { img: string; title: string; category: string; id:number; gender:string}) => {
+const ProductCard = ({ img, title, category,id}: { img: string; title: string; category: string; id:number; gender:string}) => {
   const navigate = useNavigate()
   
   

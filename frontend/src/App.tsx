@@ -1,11 +1,11 @@
 import Home from "./components/Home";
-import Signin from "./components/Signin";
-import Signup from "./components/Signup";
 import {Routes,Route} from "react-router-dom"
-import Womensection from "./components/Womensection";
-import AddToBag from "./components/AddToBag";
-import ProductDetailView from "./components/ProductDetailView";
+import AddToBag from "./components/card/AddToBag";
+import ProductDetailView from "./components/product/ProductDetailView";
 import Admin from "./routes/Admin";
+import Signup from "./components/auth/Signup";
+import Signin from "./components/auth/Signin";
+import Womensection from "./components/section/Womensection";
 function App() {
 
   return (
