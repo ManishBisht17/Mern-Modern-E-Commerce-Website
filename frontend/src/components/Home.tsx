@@ -1,6 +1,6 @@
 import Herosection from "./Herosection"
 import Nav from "./Nav"
-import ProductCard from "./ProductCatigoryCard"
+import ProductCard from "../components/product/ProductCatigoryCard"
 
 const Home = () => {
   return (
