@@ -13,15 +13,15 @@ type productType = {
 
 const productsCardImg: productType = {
     men: {
-        src: "https://plus.unsplash.com/premium_photo-1688497831535-120bd47d9f9c?w=3000&auto=format&fit=crop&q=95&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmFzaGlvbiUyMG1lbnxlbnwwfHwwfHx8MA%3D%3D",
+        src: "https://i.pinimg.com/474x/7d/42/6e/7d426ef12e13eaca86168e0631afe83f.jpg",
         routeTo:"/mens"
     },
     women: {
-        src: "https://images.unsplash.com/photo-1611042553484-d61f84d22784?w=3000&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZmFzaGlvbiUyMG1vZGVsfGVufDB8fDB8fHww",
+        src: "https://i.pinimg.com/736x/e4/51/9a/e4519a278876324772515974182c97d5.jpg",
         routeTo:"/womens"
     },
     accessary: {
-        src: "https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=3000&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YWNjZXNzb3J5fGVufDB8fDB8fHww",
+        src: "https://i.pinimg.com/474x/b6/60/f4/b660f45f52c5cdec69a3d7d3284365ef.jpg",
         routeTo:"/accessary"
     },
 }

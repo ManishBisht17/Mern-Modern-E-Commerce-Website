@@ -5,6 +5,7 @@ import {Routes,Route} from "react-router-dom"
 import Womensection from "./components/Womensection";
 import AddToBag from "./components/AddToBag";
 import ProductDetailView from "./components/ProductDetailView";
+import Admin from "./routes/Admin";
 function App() {
 
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/cart" element={<AddToBag />} />
           <Route path="/womens" element={<Womensection />} />
           <Route path="/item/product/:id" element={<ProductDetailView />} />
+          <Route path="/admin/*" element={<Admin/>} />
         </Routes>
   );
 }

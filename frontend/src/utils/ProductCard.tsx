@@ -2,9 +2,13 @@ import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ img, title, category,id,gender}: { img: string; title: string; category: string; id:number; gender:string}) => {
   const navigate = useNavigate()
+  
+  
   const handleRoute = () =>{  
     navigate(`/item/product/${id}`)
   }
+  
+  
   return (
     <div onClick={handleRoute} className="relative h-[60vh] w-sm m-1 group">
       <div className="relative h-full w-full overflow-hidden">
