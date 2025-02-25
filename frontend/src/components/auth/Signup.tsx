@@ -8,30 +8,29 @@ const Signup = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [phone, setPhone] = useState<number>();
-  const [msg,setMsg] = useState("")
+  const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
-  const handleClick = async() => {
-      await axios.post(`${BaseUrl}/user/signup`, {
-          name,
-          email,
-          password,
-          phone,
-        })
-        .then((res) => {
-          if (!res.data.token) {
-            navigate("/signup");
-          } else {
-            localStorage.setItem("token", res.data?.token);
-            navigate("/");
-          }
-        })
-        .catch(() => {
-          setMsg("error signing up")
-        });
-    }
-
-
+  const handleClick = async () => {
+    await axios
+      .post(`${BaseUrl}/user/signup`, {
+        name,
+        email,
+        password,
+        phone,
+      })
+      .then((res) => {
+        if (!res.data.token) {
+          navigate("/signup");
+        } else {
+          localStorage.setItem("token", res.data?.token);
+          navigate("/");
+        }
+      })
+      .catch(() => {
+        setMsg("error signing up");
+      });
+  };
   return (
     <div className="h-screen w-full flex justify-center items-center">
       <div className="relative flex flex-col rounded-xl bg-transparent">
@@ -91,7 +90,7 @@ const Signup = () => {
               />
             </div>
           </div>
-                {msg?<p className="text-center text-red-800">*{msg}</p>:''}    
+          {msg ? <p className="text-center text-red-800">*{msg}</p> : ""}
           <button
             onClick={handleClick}
             className="active:scale-95 mt-4 w-full rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
