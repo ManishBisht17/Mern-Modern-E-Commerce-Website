@@ -15,21 +15,26 @@ cloudinary.config({
 
 // Function to generate a barcode image and upload it to Cloudinary
 const generateAndUploadBarcode = async (barcodeValue) => {
-  const canvas = createCanvas();
-  JsBarcode(canvas, barcodeValue, {
-    format: "CODE128", // Barcode format
-    displayValue: true, // Show the barcode value below the barcode
-  });
+  try {
+    const canvas = createCanvas();
+    JsBarcode(canvas, barcodeValue, {
+      format: "CODE128", // Barcode format
+      displayValue: true, // Show the barcode value below the barcode
+    });
 
-  // Convert the canvas to a data URL
-  const barcodeDataUrl = canvas.toDataURL("image/png");
+    // Convert the canvas to a data URL
+    const barcodeDataUrl = canvas.toDataURL("image/png");
 
-  // Upload the barcode image to Cloudinary
-  const result = await cloudinary.uploader.upload(barcodeDataUrl, {
-    folder: "barcodes", // Optional: Store barcodes in a specific folder
-  });
+    // Upload the barcode image to Cloudinary
+    const result = await cloudinary.uploader.upload(barcodeDataUrl, {
+      folder: "barcodes", // Optional: Store barcodes in a specific folder
+    });
 
-  return result.secure_url; // Return the URL of the uploaded barcode image
+    return result.secure_url; // Return the URL of the uploaded barcode image
+  } catch (error) {
+    console.error("Error generating or uploading barcode:", error);
+    throw new Error("Failed to generate and upload barcode");
+  }
 };
 
 export const createProduct = async (req, res) => {
@@ -88,5 +93,28 @@ export const createProduct = async (req, res) => {
       message: "Error creating product",
       error: error.message,
     });
+  }
+};
+
+// Add to cart (product and final price )
+export const productCart = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const productQuantity = req.params.productQuantity;
+
+    // Find product in the database
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    // Calculate final price
+    const finalProductPrice = product.price * productQuantity;
+
+    res.status(200).json({ product, finalProductPrice });
+  } catch (error) {
+    console.error("Error in productCart:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };

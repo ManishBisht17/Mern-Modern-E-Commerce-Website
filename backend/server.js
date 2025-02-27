@@ -7,8 +7,6 @@ import mongodb from "./dataBase/db.js";
 const PORT = process.env.PORT || 5001;
 const server = express();
 server.use(express.json());
-
-// Use app.js routes
 server.use(app);
 
 server.listen(PORT, () => {
