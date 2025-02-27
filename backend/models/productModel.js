@@ -22,6 +22,11 @@ const productSchema = new mongoose.Schema(
         comment: { type: String },
       },
     ],
+    size: {
+      type: String,
+      enum: ["S", "M", "L", "XL", "XLL"],
+      required: true,
+    },
     barcode: { type: String, unique: true },
 
     barcodeImageUrl: {

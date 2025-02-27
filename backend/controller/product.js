@@ -74,10 +74,11 @@ export const createProduct = async (req, res) => {
       category: req.body.category,
       brand: req.body.brand,
       imageUrl: imageUrls,
-      barcode: barcodeValue,
-      barcodeImageUrl: barcodeUrl,
       ratings: req.body.ratings,
       reviews: req.body.reviews,
+      size: req.body.size,
+      barcode: barcodeValue,
+      barcodeImageUrl: barcodeUrl,
     });
 
     const savedProduct = await newProduct.save();
@@ -112,9 +113,30 @@ export const productCart = async (req, res) => {
     // Calculate final price
     const finalProductPrice = product.price * productQuantity;
 
-    res.status(200).json({ product, finalProductPrice });
+    res.status(200).json({ name: product.name, price: finalProductPrice });
   } catch (error) {
     console.error("Error in productCart:", error);
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// Display all product to the user
+
+export const displayProduct = async (req, res) => {
+  try {
+    const products = await Product.find();
+
+    res.status(200).json({
+      success: true,
+      count: products.length,
+      products,
+    });
+  } catch (error) {
+    console.error("error fetching product : ", error);
+    res.status(500).json({
+      success: false,
+      message: " failed to fetch products details",
+      error: error.message,
+    });
   }
 };
