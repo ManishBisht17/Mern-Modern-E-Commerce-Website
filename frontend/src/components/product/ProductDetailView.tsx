@@ -3,15 +3,14 @@ import Nav from "../Nav";
 import ProductImgCard from "../../utils/ProductImgCard";
 import OptionImgCard from "../../utils/OptionImgCard";
 import SizeSelectorBox from "../../utils/SizeSelectorBox";
-import {  useState } from "react";
+import { useState } from "react";
 import { RatingStar } from "../../constant/IconFile";
 import axios from "axios";
 
-
 const ProductDetailView = () => {
-  const { id } = useParams();
+  const { productId } = useParams();
   const [count, setCount] = useState<number>(1);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   //axios call with id to backend and get the data of that product
 
   const handleDecrement = () => {
@@ -22,16 +21,26 @@ const ProductDetailView = () => {
     setCount(count + 1);
   };
 
-  const handleAddToCart = ()=>{
-    const isLogin = localStorage.getItem("token")
-    if(!isLogin) navigate("/signin")
-    axios.get("http://localhost/5000/product/show-product",{
-      params: {
-        id,
-        quantity:count
-      }
-    })
-  } 
+  const handleAddToCart = async () => {
+    const isLogin = localStorage.getItem("token");
+    if (!isLogin) navigate("/signin");
+      
+    await axios.post(
+        `http://localhost/5000/product/productCart/${productId}`,
+        {
+          headers: {
+            isLogin,
+          },
+        }
+      )
+      .then((res)=>{
+        console.log(res.data.name)
+      })
+      .catch((err)=>{
+        console.log("error in add to cart productview")
+      })
+   
+  };
 
   return (
     <>
@@ -75,42 +84,47 @@ const ProductDetailView = () => {
                   $250
                 </span>
               </div>
-
             </div>
 
-            
-              <div className="flex justify-between">
-                <h1 className="text-lg font-light">Size</h1>
-                <h4 className="text-md font-light">size chart</h4>
+            <div className="flex justify-between">
+              <h1 className="text-lg font-light">Size</h1>
+              <h4 className="text-md font-light">size chart</h4>
+            </div>
+            <div className="flex flex-col gap-8">
+              <SizeSelectorBox />
+
+              <div className="amount flex items-center border border-gray-400 rounded-md p-2 w-32 justify-between">
+                <button
+                  className="px-3 py-1 border text-lg rounded-md hover:bg-gray-400 disabled:opacity-50"
+                  onClick={handleDecrement}
+                  disabled={count === 0} // Disables button when count is 0
+                >
+                  −
+                </button>
+                <span className="text-lg font-bold">{count}</span>
+                <button
+                  className="px-3 py-1 border text-lg rounded-md hover:bg-gray-400"
+                  onClick={handleIncrement}
+                >
+                  +
+                </button>
               </div>
-              <div className="flex flex-col gap-8">
-                <SizeSelectorBox />
 
-                <div className="amount flex items-center border border-gray-400 rounded-md p-2 w-32 justify-between">
-                  <button
-                    className="px-3 py-1 border text-lg rounded-md hover:bg-gray-400 disabled:opacity-50"
-                    onClick={handleDecrement}
-                    disabled={count === 0} // Disables button when count is 0
-                  >
-                    −
-                  </button>
-                  <span className="text-lg font-bold">{count}</span>
-                  <button
-                    className="px-3 py-1 border text-lg rounded-md hover:bg-gray-400"
-                    onClick={handleIncrement}
-                  >
-                    +
-                  </button>
-                </div>
-
-                <div className="flex gap-8 w-full">
-                  <button onClick={handleAddToCart} className="py-4 bg-black w-full rounded text-white" >Add to cart</button>
-                  <button className="py-4 bg-black w-full rounded text-white" >buy product</button>
-                  <button className="py-4 w-full bg-gray-300">out of stock</button>
-                </div>
-
+              <div className="flex gap-8 w-full">
+                <button
+                  onClick={handleAddToCart}
+                  className="py-4 bg-black w-full rounded text-white"
+                >
+                  Add to cart
+                </button>
+                <button className="py-4 bg-black w-full rounded text-white">
+                  buy product
+                </button>
+                <button className="py-4 w-full bg-gray-300">
+                  out of stock
+                </button>
               </div>
-            
+            </div>
           </div>
         </div>
       </div>

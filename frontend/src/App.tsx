@@ -1,6 +1,6 @@
 import Home from "./components/Home";
 import {Routes,Route} from "react-router-dom"
-import AddToBag from "./components/card/AddToBag";
+import AddToBag from "./components/cart/AddToBag";
 import ProductDetailView from "./components/product/ProductDetailView";
 import Admin from "./routes/Admin";
 import Signup from "./components/auth/Signup";
@@ -15,7 +15,7 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/cart" element={<AddToBag />} />
           <Route path="/womens" element={<Womensection />} />
-          <Route path="/item/product/:id" element={<ProductDetailView />} />
+          <Route path="/item/product/:productId" element={<ProductDetailView />} />
           <Route path="/admin/*" element={<Admin/>} />
         </Routes>
   );

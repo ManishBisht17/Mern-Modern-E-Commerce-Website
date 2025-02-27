@@ -96,6 +96,8 @@ export const createProduct = async (req, res) => {
   }
 };
 
+
+
 // Add to cart (product and final price )
 export const productCart = async (req, res) => {
   try {

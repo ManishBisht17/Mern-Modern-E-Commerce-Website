@@ -1,16 +1,25 @@
 import { ChevronDown } from 'lucide-react';
 import Nav from '../Nav';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCartData } from '../../store/addToCart/thunk/addToCartThunk';
+import { AppDispatch } from '../../store/store';
+import { RootState } from '../../store/rootReducer';
 
 const AddToBag = () => {
+  const { value, loading, error } = useSelector( (state: RootState ) => state.cartProducts )
+  const dispatch = useDispatch<AppDispatch>()
+
+  useEffect(() => {
+   dispatch(fetchCartData()) 
+  },[dispatch])
+
   return (
     <>
     <Nav/>
       <div className="grid grid-cols-12 gap-8 justify-center mt-24 mx-8">
         <div className="col-span-6">
-          <div className="flex justify-end items-center mb-6">
-            <button className="text-sm">Print</button>
-          </div>
-
+        {value?.map( elem => <h1>cart</h1>)}
           <div className="flex w-full justify-end gap-8">
             <div className="w-64 bg-red-200">
               <img 
@@ -21,9 +30,8 @@ const AddToBag = () => {
             </div>
             <div className="flex flex-col min-w-96 items-end">
               <h3 className="text-lg mb-2">Gucci Signoria slingback pump</h3>
-              <p className="text-sm text-gray-600 mb-2">Style# 783821 BNC80 3706</p>
               <p className="text-sm text-gray-600 mb-2">Variation: dark green patent leather</p>
-              <p className="text-sm text-gray-600 mb-4">Size: 35 - 5 US</p>
+              <p className="text-sm text-gray-600 mb-4">Size: MD</p>
               
               <div className="flex items-center gap-4 mb-4">
                 <p>QTY : 1</p>|
@@ -34,11 +42,10 @@ const AddToBag = () => {
               
               <div className="flex gap-4 text-sm">
                 <button className="underline cursor-pointer">REMOVE</button>
-                <span>|</span>
-                <button className="underline cursor-pointer">SAVED ITEMS</button>
               </div>
             </div>
           </div>
+
         </div>
 
         {/* Order Summary */}

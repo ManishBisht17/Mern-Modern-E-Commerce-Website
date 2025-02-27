@@ -1,9 +1,9 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import carteProductReducer from './addToCart/slice/cartProductSlice'
+import cartProductReducer from './addToCart/slice/cartProductSlice'
 
 const rootReducer = combineReducers({
-    cardProducts: carteProductReducer
+    cartProducts: cartProductReducer
 })
-
+export type RootState = ReturnType<typeof rootReducer>
 export default rootReducer;
 
