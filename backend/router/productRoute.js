@@ -14,4 +14,3 @@ router.get("/show-product", displayProduct);
 // Http://localhost/5000/product/show-product
 
 export default router;
-//http://localhost:5000/product:/productCart/:productId/:productQuantity vivek.may.gain@gmail.com
