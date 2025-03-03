@@ -28,7 +28,10 @@ const ProductDetailView = () => {
     await axios.post(
         `http://localhost/5000/product/productCart/${productId}`,
         {
-          headers: {
+        quantity:count
+        },
+        {
+        headers: {
             isLogin,
           },
         }
