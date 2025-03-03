@@ -1,12 +1,15 @@
+
 import { useNavigate } from "react-router-dom";
 
-const ProductCard = ({ img, title, category,id}: { img: string; title: string; category: string; id:number; gender:string}) => {
+const ProductCard = ({onClick, img, title, category,id}: {onClick:()=>void; img: string; title: string; category: string; id:string;}) => {
   const navigate = useNavigate()
   
   
   const handleRoute = () =>{  
     navigate(`/item/product/${id}`)
+    onClick()
   }
+  
   
   
   return (
