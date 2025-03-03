@@ -97,33 +97,7 @@ export const createProduct = async (req, res) => {
   }
 };
 
-
-
-// Add to cart (product and final price )
-export const productCart = async (req, res) => {
-  try {
-    const productId = req.params.productId;
-    const productQuantity = req.params.productQuantity;
-
-    // Find product in the database
-    const product = await Product.findById(productId);
-
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
-    }
-
-    // Calculate final price
-    const finalProductPrice = product.price * productQuantity;
-
-    res.status(200).json({ name: product.name, price: finalProductPrice });
-  } catch (error) {
-    console.error("Error in productCart:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
 // Display all product to the user
-
 export const displayProduct = async (req, res) => {
   try {
     const products = await Product.find();
