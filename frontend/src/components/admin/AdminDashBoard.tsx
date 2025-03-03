@@ -1,8 +1,7 @@
-import { IconType } from "react-icons";
 import { CgProductHunt, CgProfile } from "react-icons/cg";
 import { FcCustomerSupport } from "react-icons/fc";
 import { GrTransaction } from "react-icons/gr";
-import { Link, Location, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 interface Liprops{
   url: string;
@@ -25,7 +24,7 @@ const AdminDashBoard = () => {
         <div className="flex flex-col gap-4 pt-8 ">
           <h5 className="text-zinc-500">DashBoard</h5>
             <ul className="">
-              {List.map((list,index)=>(
+              {List.map((list)=>(
                 <li className={`text-lg flex gap-4 items-center p-2 ${location.pathname == list.url ? 'text-blue-600 font-semibold': "text-black"}`}>{list.icon}<Link to={list.url}>{list.name}</Link></li>
               ))}
             </ul>

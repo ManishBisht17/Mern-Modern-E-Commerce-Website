@@ -3,9 +3,9 @@ import { IoCartSharp } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
-import WomenDropdown from "../utils/WomenDropdown";
-import MenDropdown from "../utils/MenDropdown";
-import AccessoriesDropDown from "../utils/AccessoriesDropDown";
+import WomenDropdown from "../utils/DropDown/WomenDropdown";
+import MenDropdown from "../utils/DropDown/MenDropdown";
+import AccessoriesDropDown from "../utils/DropDown/AccessoriesDropDown";
 import UserProfileButton from "../utils/UserProfileButton";
 
 const Nav = () => {

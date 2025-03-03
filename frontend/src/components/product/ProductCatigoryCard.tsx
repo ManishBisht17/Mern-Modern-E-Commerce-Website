@@ -1,4 +1,4 @@
-import Card from "../../utils/Card"
+import Card from "../../utils/Card/Card"
 
 type ProductImage = {
     src: string;
