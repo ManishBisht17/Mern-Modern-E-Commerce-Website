@@ -19,7 +19,8 @@ const AddToBag = () => {
     <Nav/>
       <div className="grid grid-cols-12 gap-8 justify-center mt-24 mx-8">
         <div className="col-span-6">
-        {value?.map( elem => <h1>cart</h1>)}
+        
+        {/* {value?.map( elem => <h1>cart</h1>)} */}
           <div className="flex w-full justify-end gap-8">
             <div className="w-64 bg-red-200">
               <img 

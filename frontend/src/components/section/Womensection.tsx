@@ -1,7 +1,33 @@
-import ProductCard from "../..//utils/ProductCard";
+import axios from "axios";
+import ProductCard from "../../utils/Card/ProductCard";
 import Nav from "../Nav";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { selectProduct, setProduct } from "../../store/productCardView/productCardSlice";
 
+
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+  category: string;
+  // Add more fields based on your API response
+}
 const Womensection = () => {
+  const dispatch  = useDispatch()
+  const [womenData,setWomenData] = useState<Product[]>([])
+
+  useEffect(()=>{
+    axios.get(`http://localhost:5000/product/show-product`)
+      .then((res)=>{
+        setWomenData(res.data.products)
+        dispatch(setProduct(res.data.products))
+      })
+      .catch((err)=>{
+        console.log('something went wrong while getting the womens data'+err)
+      })
+  },[])
 
   return (
     <>
@@ -22,9 +48,12 @@ const Womensection = () => {
 
         <div className="h-full w-full ">
           <h1 className="my-16 text-center text-4xl">EXPLORE</h1>
-          <div className="w-[80vw] h-full mx-auto flex flex-wrap " >
-            
-            <ProductCard id={2} gender={'womens'} title={"shorts for summer"} category={'short'} img={"https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvcnRzfGVufDB8fDB8fHww"} />
+          <div className="w-[88vw] h-full mx-auto justify-center flex flex-wrap " >
+            {
+              womenData.map((item)=>{
+                return <ProductCard onClick={()=>dispatch(selectProduct(item))} id={item._id}  title={item.name} category={item.category} img={item.imageUrl[0]} />
+              })
+            }
             
           </div>
         </div>

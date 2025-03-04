@@ -1,10 +1,7 @@
 // AuthInitializer.jsx
 import React, { useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { authState } from '../store/atom/authrizationState';
 
 const AuthInitializer = ({ children }:{children:React.ReactNode}) => {
-  const setAuth = useSetRecoilState(authState);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -19,7 +16,7 @@ const AuthInitializer = ({ children }:{children:React.ReactNode}) => {
         localStorage.removeItem('token');
       }
     }
-  }, [setAuth]);
+  }, []);
 
   return children;
 };
