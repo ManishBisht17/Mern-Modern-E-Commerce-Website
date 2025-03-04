@@ -11,11 +11,12 @@ import { RootState } from "../../store/rootReducer";
 
 
 interface productType{
+  _id:string;
   name:string;
   price:number;
-  imageUrl:string;
+  imageUrl:string[];
   brand:string;
-  rating:number;
+  ratings:number|undefined;
   review:string;
   category:string;
 }
@@ -71,9 +72,9 @@ const ProductDetailView = () => {
       <div className="grid grid-cols-12 py-6 mt-16">
         <div className="col-span-2 ">
           <div className="h-[100vh] md:sticky md:top-0 gap-8 flex lg:flex-col items-center pt-18">
-            {data?.imageUrl.map((img:any) =>{
+            {data?.imageUrl.map((img: string) =>{
              return <OptionImgCard
-                photo={img}
+               key={data._id} photo={img}
               />
 
             })}
@@ -82,7 +83,7 @@ const ProductDetailView = () => {
 
         <div className="col-span-5 mt-[6vh]">
           {
-            data?.imageUrl.map((img:any) =>{
+            data?.imageUrl.map((img: string) =>{
               return <ProductImgCard
                 photo={img}
               />
@@ -98,8 +99,12 @@ const ProductDetailView = () => {
 
             <div className="flex justify-between items-center">
               <div className="flex relative">
-                  {Array.from({ length: data?.ratings }, (_, i) => (
-                    <RatingStar key={i} className="fill-yellow-400 text-yellow-400" />
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <RatingStar key={i} className={i < Math.floor(data?.ratings ?? 0)
+                    ? "fill-yellow-400 text-yellow-400"
+                    : i < (data?.ratings ?? 0)
+                    ? "fill-yellow-200 text-yellow-200" // Half-star effect
+                    : "fill-gray-300 text-gray-300"} />
                   ))}
               </div>
 
