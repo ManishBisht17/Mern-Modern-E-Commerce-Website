@@ -9,24 +9,25 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
 
-
-interface productType{
-  _id:string;
-  name:string;
-  price:number;
-  imageUrl:string[];
-  brand:string;
-  ratings:number|undefined;
-  review:string;
-  category:string;
+interface productType {
+  _id: string;
+  name: string;
+  price: number;
+  imageUrl: string[];
+  brand: string;
+  ratings: number | undefined;
+  review: string;
+  category: string;
 }
 
 const ProductDetailView = () => {
-  const singleProductData = useSelector( (state:RootState) => state.productDetailView.selectedProduct)
-  console.log(singleProductData)
+  const singleProductData = useSelector(
+    (state: RootState) => state.productDetailView.selectedProduct
+  );
+  console.log(singleProductData);
   const { productId } = useParams();
   const [count, setCount] = useState<number>(1);
-  const [data,setData] = useState<productType|null>(singleProductData)
+  const [data, setData] = useState<productType | null>(singleProductData);
   const navigate = useNavigate();
   //axios call with id to backend and get the data of that product
 
@@ -62,9 +63,9 @@ const ProductDetailView = () => {
       });
   };
 
-  useEffect(()=>{
-      setData(singleProductData)
-  },[singleProductData])
+  useEffect(() => {
+    setData(singleProductData);
+  }, [singleProductData]);
 
   return (
     <>
@@ -72,24 +73,16 @@ const ProductDetailView = () => {
       <div className="grid grid-cols-12 py-6 mt-16">
         <div className="col-span-2 ">
           <div className="h-[100vh] md:sticky md:top-0 gap-8 flex lg:flex-col items-center pt-18">
-            {data?.imageUrl.map((img: string) =>{
-             return <OptionImgCard
-               key={data._id} photo={img}
-              />
-
+            {data?.imageUrl.map((img: string) => {
+              return <OptionImgCard key={data._id} photo={img} />;
             })}
           </div>
         </div>
 
         <div className="col-span-5 mt-[6vh]">
-          {
-            data?.imageUrl.map((img: string) =>{
-              return <ProductImgCard
-                photo={img}
-              />
-
-            })
-          }
+          {data?.imageUrl.map((img: string) => {
+            return <ProductImgCard photo={img} />;
+          })}
         </div>
 
         <div className="col-span-5 pr-4 ">
@@ -99,13 +92,18 @@ const ProductDetailView = () => {
 
             <div className="flex justify-between items-center">
               <div className="flex relative">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <RatingStar key={i} className={i < Math.floor(data?.ratings ?? 0)
-                    ? "fill-yellow-400 text-yellow-400"
-                    : i < (data?.ratings ?? 0)
-                    ? "fill-yellow-200 text-yellow-200" // Half-star effect
-                    : "fill-gray-300 text-gray-300"} />
-                  ))}
+                {Array.from({ length: 5 }, (_, i) => (
+                  <RatingStar
+                    key={i}
+                    className={
+                      i < Math.floor(data?.ratings ?? 0)
+                        ? "fill-yellow-400 text-yellow-400"
+                        : i < (data?.ratings ?? 0)
+                        ? "fill-yellow-200 text-yellow-200" // Half-star effect
+                        : "fill-gray-300 text-gray-300"
+                    }
+                  />
+                ))}
               </div>
 
               <div className="text-4xl font-light flex gap-4 ">

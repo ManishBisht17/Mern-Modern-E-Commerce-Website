@@ -1,19 +1,17 @@
 // AuthInitializer.jsx
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
-const AuthInitializer = ({ children }:{children:React.ReactNode}) => {
-
+const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       try {
-        // I will need a axios req to backend 
+        // I will need a axios req to backend
         // after it get verified then I will set auth state to true else false
         // according to the state change I will set the data
-        
       } catch (error) {
-        console.error('Token decoding error', error);
-        localStorage.removeItem('token');
+        console.error("Token decoding error", error);
+        localStorage.removeItem("token");
       }
     }
   }, []);

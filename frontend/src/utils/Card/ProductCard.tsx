@@ -1,17 +1,25 @@
-
 import { useNavigate } from "react-router-dom";
 
-const ProductCard = ({onClick, img, title, category,id}: {onClick:()=>void; img: string; title: string; category: string; id:string;}) => {
-  const navigate = useNavigate()
-  
-  
-  const handleRoute = () =>{  
-    navigate(`/item/product/${id}`)
-    onClick()
-  }
-  
-  
-  
+const ProductCard = ({
+  onClick,
+  img,
+  title,
+  category,
+  id,
+}: {
+  onClick: () => void;
+  img: string;
+  title: string;
+  category: string;
+  id: string;
+}) => {
+  const navigate = useNavigate();
+
+  const handleRoute = () => {
+    navigate(`/item/product/${id}`);
+    onClick();
+  };
+
   return (
     <div onClick={handleRoute} className="relative h-[60vh] w-sm m-1 group">
       <div className="relative h-full w-full overflow-hidden">
@@ -25,9 +33,7 @@ const ProductCard = ({onClick, img, title, category,id}: {onClick:()=>void; img:
           <h1 className="font-semibold text-lg text-white drop-shadow-lg">
             {title}
           </h1>
-          <h1 className="text-white/90 drop-shadow-md">
-          {category}
-          </h1>
+          <h1 className="text-white/90 drop-shadow-md">{category}</h1>
         </div>
       </div>
     </div>

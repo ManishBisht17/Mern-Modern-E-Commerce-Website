@@ -11,5 +11,5 @@ server.use(app);
 
 server.listen(PORT, () => {
   console.log("Server is running  on 5000");
+  mongodb();
 });
-mongodb();
