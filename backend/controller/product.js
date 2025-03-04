@@ -116,3 +116,29 @@ export const displayProduct = async (req, res) => {
     });
   }
 };
+// adding reviews
+const addReview = async (req, res) => {
+  const { productId } = req.params;
+  const { rating, comment } = req.body;
+  const userId = req.user._id; // Assuming user is authenticated
+
+  try {
+    const product = await Product.findById(productId);
+    if (!product) return res.status(404).json({ message: "Product not found" });
+
+    // Add review
+    product.reviews.push({ user: userId, rating, comment });
+
+    // Recalculate average rating
+    const totalRatings = product.reviews.reduce(
+      (acc, review) => acc + review.rating,
+      0
+    );
+    product.ratings = totalRatings / product.reviews.length;
+
+    await product.save();
+    res.status(201).json({ message: "Review added successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
