@@ -142,3 +142,20 @@ const addReview = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// get reviews
+const getProductReviews = async (req, res) => {
+  const { productId } = req.params;
+
+  try {
+    const product = await Product.findById(productId).populate(
+      "reviews.user",
+      "name email"
+    );
+    if (!product) return res.status(404).json({ message: "Product not found" });
+
+    res.json(product.reviews);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
