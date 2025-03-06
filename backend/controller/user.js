@@ -14,17 +14,13 @@ export const authMiddleware = async (req, res, next) => {
     return res.status(401).json({ message: "Unauthorized: No token provided" });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
       return res.status(403).json({ message: "Invalid or expired token" });
     }
 
-    req.user = decoded; // Store decoded token data in req.user
-    next();
-    res.status(200).json({
-      message: true,
-      decoded,
-    });
+    req.user = decoded;
+    next(); //
   });
 };
 

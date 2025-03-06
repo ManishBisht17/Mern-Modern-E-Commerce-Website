@@ -1,5 +1,14 @@
 import mongoose from "mongoose";
 
+const reviewSchema = new mongoose.Schema(
+  {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    rating: { type: Number, required: true, min: 1, max: 5 }, // Rating from 1 to 5
+    comment: { type: String, required: true },
+  },
+  { timestamps: true } // Adds createdAt & updatedAt fields
+);
+
 const productSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
@@ -12,28 +21,19 @@ const productSchema = new mongoose.Schema(
         required: true,
       },
     ],
-    stock: { type: String, default: "full" },
+    stock: { type: Boolean, default: true }, // Fixed "boolean" to "Boolean"
     category: { type: String, required: true },
     brand: { type: String },
-    ratings: { type: Number, default: 0 },
-    reviews: [
-      {
-        user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-        comment: { type: String },
-      },
-    ],
+    ratings: { type: Number, default: 0 }, // Average rating of the product
+    reviews: [reviewSchema], // Embedded review schema
     size: {
       type: String,
       enum: ["S", "M", "L", "XL", "XLL"],
       required: true,
     },
     barcode: { type: String, unique: true },
-
-    barcodeImageUrl: {
-      type: String,
-    },
+    barcodeImageUrl: { type: String },
   },
-
   { timestamps: true }
 );
 
