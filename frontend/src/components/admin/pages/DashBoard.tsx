@@ -1,4 +1,3 @@
-import React from "react";
 import AdminDashBoard from "../AdminDashBoard";
 import { BellIcon, Search, TrendingDown, TrendingUp, User } from "lucide-react";
 import { BiMaleFemale } from "react-icons/bi";

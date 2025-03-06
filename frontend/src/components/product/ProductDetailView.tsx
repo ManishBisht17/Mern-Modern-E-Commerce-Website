@@ -8,6 +8,8 @@ import { RatingStar } from "../../constant/IconFile";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
+import Button from "../../utils/button/Button";
+import useAddToCart from "../customHook/useAddToCart";
 
 interface productType {
   _id: string;
@@ -18,17 +20,18 @@ interface productType {
   ratings: number | undefined;
   review: string;
   category: string;
+  stock:string;
 }
 
 const ProductDetailView = () => {
   const singleProductData = useSelector(
     (state: RootState) => state.productDetailView.selectedProduct
   );
-  console.log(singleProductData);
   const { productId } = useParams();
   const [count, setCount] = useState<number>(1);
   const [data, setData] = useState<productType | null>(singleProductData);
   const navigate = useNavigate();
+  const {CartData} = useAddToCart()
   //axios call with id to backend and get the data of that product
 
   const handleDecrement = () => {
@@ -42,25 +45,10 @@ const ProductDetailView = () => {
   const handleAddToCart = async () => {
     const isLogin = localStorage.getItem("token");
     if (!isLogin) navigate("/signin");
-
-    await axios
-      .post(
-        `http://localhost/5000/product/productCart/${productId}`,
-        {
-          quantity: count,
-        },
-        {
-          headers: {
-            isLogin,
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res.data.name);
-      })
-      .catch((err) => {
-        console.log("error in add to cart productview");
-      });
+    if(isLogin){
+      const res = await CartData(count, isLogin, productId)
+      console.log(res)
+    }
   };
 
   useEffect(() => {
@@ -122,35 +110,37 @@ const ProductDetailView = () => {
               <SizeSelectorBox />
 
               <div className="amount flex items-center border border-gray-400 rounded-md p-2 w-32 justify-between">
-                <button
+                <Button
                   className="px-3 py-1 border text-lg rounded-md hover:bg-gray-400 disabled:opacity-50"
                   onClick={handleDecrement}
                   disabled={count === 0} // Disables button when count is 0
                 >
                   −
-                </button>
+                </Button>
                 <span className="text-lg font-bold">{count}</span>
-                <button
+                <Button
                   className="px-3 py-1 border text-lg rounded-md hover:bg-gray-400"
                   onClick={handleIncrement}
                 >
                   +
-                </button>
+                </Button>
               </div>
 
               <div className="flex gap-8 w-full">
-                <button
+                <Button
                   onClick={handleAddToCart}
                   className="py-4 bg-black w-full rounded text-white"
                 >
                   Add to cart
-                </button>
-                <button className="py-4 bg-black w-full rounded text-white">
+                </Button>
+                <Button className="py-4 bg-black w-full rounded text-white">
                   buy product
-                </button>
-                <button className="py-4 w-full bg-gray-300">
+                </Button>
+                {
+                  data?.stock!=="full"&& <Button className="py-4 w-full bg-gray-300">
                   out of stock
-                </button>
+                </Button>
+                }
               </div>
             </div>
           </div>

@@ -1,23 +1,22 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
+import Button from "../button/Button";
 
 const AccessoriesDropDown = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const handleClick = () => {
+    setIsOpen(!isOpen)
+  }
   return (
     <div
       className="relative group"
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="text-sm font-medium hover:text-gray-600 flex items-center gap-1"
-      >
-        ACCESSORIES <IoIosArrowDown size={14} />
-      </button>
-
+      <Button icon={<IoIosArrowDown size={14} />} onClick={handleClick} className="text-sm font-medium hover:text-gray-600 flex items-center gap-1">
+      ACCESSORIES
+      </Button>
       <div
         className={`absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg overflow-hidden transition-all duration-300 ease-in-out transform ${
           isOpen

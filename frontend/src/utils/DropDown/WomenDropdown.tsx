@@ -1,26 +1,30 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoIosArrowDown } from "react-icons/io";
+import Button from "../button/Button";
 
 const WomenDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate()
   
+  const handleClick = () => {
+      window.innerWidth <= 768 && setIsOpen(!isOpen)
+      navigate("/womens")
+    } 
+  
+
   return (
     <div
       className="relative group"
       onMouseEnter={() => window.innerWidth > 768 && setIsOpen(true)}
       onMouseLeave={() => window.innerWidth > 768 && setIsOpen(false)}
     >
-      <button
-        onClick={() => {
-           window.innerWidth <= 768 && setIsOpen(!isOpen)
-           navigate("/womens")} 
-          }
-        className="text-sm font-medium hover:text-gray-600 flex items-center gap-1"
-      >
-        WOMEN <IoIosArrowDown size={14} />
-      </button>
+      
+     
+      <Button onClick={handleClick} className={"text-sm font-medium hover:text-gray-600 flex items-center gap-1"} icon={<IoIosArrowDown size={14} />}>
+        WOMEN 
+      </Button>
+
 
       <div
         className={`absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg overflow-hidden transition-all duration-300 ease-in-out transform ${

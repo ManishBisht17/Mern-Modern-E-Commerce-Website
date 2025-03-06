@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import useSignIn from "../customHook/useSignIn";
+import Button from "../../utils/button/Button";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [err, setError] = useState<string|null>(null)
+  const [err, setError] = useState<string | null>(null)
   const {SignInUser} = useSignIn()
 
   const handleClick = async () => {
@@ -53,13 +54,12 @@ const Signin = () => {
             </div>
           </div>
 
-          <button
+          <Button
             onClick={handleClick}
             className="active:scale-95 mt-4 w-full rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            type="button"
           >
             Sign In
-          </button>
+          </Button>
           <p className="flex justify-center mt-6 text-sm text-slate-600">
             Don&apos;t have an account?
             <Link
