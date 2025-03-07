@@ -5,11 +5,12 @@ import OptionImgCard from "../../utils/Card/OptionImgCard";
 import SizeSelectorBox from "../../utils/SizeSelectorBox";
 import { useEffect, useState } from "react";
 import { RatingStar } from "../../constant/IconFile";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/rootReducer";
 import Button from "../../utils/button/Button";
 import useAddToCart from "../customHook/useAddToCart";
+import { motion, AnimatePresence } from 'framer-motion';
+
 
 interface productType {
   _id: string;
@@ -20,7 +21,7 @@ interface productType {
   ratings: number | undefined;
   review: string;
   category: string;
-  stock:string;
+  stock: string;
 }
 
 const ProductDetailView = () => {
@@ -30,9 +31,9 @@ const ProductDetailView = () => {
   const { productId } = useParams();
   const [count, setCount] = useState<number>(1);
   const [data, setData] = useState<productType | null>(singleProductData);
+  const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
   const navigate = useNavigate();
-  const {CartData} = useAddToCart()
-  //axios call with id to backend and get the data of that product
+  const { CartData } = useAddToCart();
 
   const handleDecrement = () => {
     if (count > 0) setCount(count - 1);
@@ -44,11 +45,15 @@ const ProductDetailView = () => {
 
   const handleAddToCart = async () => {
     const isLogin = localStorage.getItem("token");
-    if (!isLogin) navigate("/signin");
-    if(isLogin){
-      const res = await CartData(count, isLogin, productId)
-      console.log(res)
+    if (!isLogin) navigate("/login");
+    if (isLogin) {
+      const res = await CartData(isLogin, productId);
+      console.log(res);
     }
+  };
+
+  const handleThumbnailClick = (index: number) => {
+    setActiveImageIndex(index);
   };
 
   useEffect(() => {
@@ -59,26 +64,42 @@ const ProductDetailView = () => {
     <>
       <Nav />
       <div className="grid grid-cols-12 py-6 mt-16">
-        <div className="col-span-2 ">
-          <div className="h-[100vh] md:sticky md:top-0 gap-8 flex lg:flex-col items-center pt-18">
-            {data?.imageUrl.map((img: string) => {
-              return <OptionImgCard key={data._id} photo={img} />;
+        <div className="col-span-2">
+          <div className="h-[100vh] md:sticky md:top-0 gap-8 flex lg:flex-col items-center ">
+            {data?.imageUrl.map((img: string, index: number) => {
+              return (
+                <OptionImgCard 
+                  key={`${data._id}-${index}`} 
+                  photo={img} 
+                  isActive={index === activeImageIndex}
+                  onClick={() => handleThumbnailClick(index)}
+                />
+              );
             })}
           </div>
         </div>
 
-        <div className="col-span-5 mt-[6vh]">
-          {data?.imageUrl.map((img: string) => {
-            return <ProductImgCard photo={img} />;
-          })}
+        <div className="col-span-5 ">
+          {/* Only show the active image */}
+         <AnimatePresence>
+          {data?.imageUrl[activeImageIndex] && (
+            <motion.div key={activeImageIndex} 
+             initial={{ opacity: 0, scale: 0.9 }} 
+             animate={{ opacity: 1, scale: 1 }} 
+             exit={{ opacity: 0, scale:0.90 }} 
+             transition={{ duration: 0.2,ease:'easeIn' }}>
+              <ProductImgCard photo={data.imageUrl[activeImageIndex]} />
+            </motion.div>
+          )}
+          </AnimatePresence>
         </div>
 
-        <div className="col-span-5 pr-4 ">
-          <div className="h-[100vh] sticky top-0 pt-18">
+        <div className="col-span-5 pr-4">
+          <div className="h-[100vh] sticky top-0  pr-18">
             <h1 className="text-md font-light">{data?.category}</h1>
             <h1 className="text-4xl font-light">{data?.name}</h1>
 
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center pt-4">
               <div className="flex relative">
                 {Array.from({ length: 5 }, (_, i) => (
                   <RatingStar
@@ -87,22 +108,19 @@ const ProductDetailView = () => {
                       i < Math.floor(data?.ratings ?? 0)
                         ? "fill-yellow-400 text-yellow-400"
                         : i < (data?.ratings ?? 0)
-                        ? "fill-yellow-200 text-yellow-200" // Half-star effect
+                        ? "fill-yellow-200 text-yellow-200"
                         : "fill-gray-300 text-gray-300"
                     }
                   />
                 ))}
               </div>
 
-              <div className="text-4xl font-light flex gap-4 ">
-                {data?.price}
-                {/* <span className="line-through decoration-2 text-zinc-600">
-                  $250
-                </span> */}
+              <div className="text-4xl font-light flex gap-4">
+                rs{data?.price}
               </div>
             </div>
 
-            <div className="flex justify-between">
+            <div className="flex justify-between pt-8">
               <h1 className="text-lg font-light">Size</h1>
               <h4 className="text-md font-light">size chart</h4>
             </div>
@@ -113,7 +131,7 @@ const ProductDetailView = () => {
                 <Button
                   className="px-3 py-1 border text-lg rounded-md hover:bg-gray-400 disabled:opacity-50"
                   onClick={handleDecrement}
-                  disabled={count === 0} // Disables button when count is 0
+                  disabled={count === 0}
                 >
                   −
                 </Button>
@@ -136,13 +154,15 @@ const ProductDetailView = () => {
                 <Button className="py-4 bg-black w-full rounded text-white">
                   buy product
                 </Button>
-                {
-                  data?.stock!=="full"&& <Button className="py-4 w-full bg-gray-300">
-                  out of stock
-                </Button>
-                }
+                {!data && (
+                  <Button className="py-4 w-full bg-gray-300">
+                    out of stock
+                  </Button>
+                )}
               </div>
+
             </div>
+
           </div>
         </div>
       </div>

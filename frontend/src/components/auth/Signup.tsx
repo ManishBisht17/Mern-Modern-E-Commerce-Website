@@ -90,7 +90,7 @@ const Signup = () => {
           <p className="flex justify-center mt-6 text-sm text-slate-600">
             Already, have an account?
             <Link
-              to="/signin"
+              to="/login"
               className="ml-1 text-sm font-semibold text-slate-700 underline"
             >
               Sign in
