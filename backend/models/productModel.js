@@ -21,11 +21,11 @@ const productSchema = new mongoose.Schema(
         required: true,
       },
     ],
-    stock: { type: Boolean, default: true }, // Fixed "boolean" to "Boolean"
+    stock: { type: Boolean, default: true },
     category: { type: String, required: true },
     brand: { type: String },
     ratings: { type: Number, default: 0 }, // Average rating of the product
-    reviews: [reviewSchema], // Embedded review schema
+    reviews: [reviewSchema],
     size: {
       type: String,
       enum: ["S", "M", "L", "XL", "XLL"],

@@ -117,7 +117,7 @@ export const displayProduct = async (req, res) => {
   }
 };
 // adding reviews
-const addReview = async (req, res) => {
+export const addReview = async (req, res) => {
   const { productId } = req.params;
   const { rating, comment } = req.body;
   const userId = req.user._id; // Assuming user is authenticated
@@ -144,14 +144,14 @@ const addReview = async (req, res) => {
 };
 
 // get reviews
-const getProductReviews = async (req, res) => {
+export const getProductReviews = async (req, res) => {
   const { productId } = req.params;
 
   try {
-    const product = await Product.findById(productId).populate(
-      "reviews.user",
-      "name email"
-    );
+    const product = await Product.findById(productId).populate("reviews.user", [
+      "name",
+      "email",
+    ]);
     if (!product) return res.status(404).json({ message: "Product not found" });
 
     res.json(product.reviews);

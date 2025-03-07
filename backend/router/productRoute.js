@@ -6,7 +6,12 @@ const router = express.Router();
 
 // Upload Product Image Route
 router.post("/upload", createProduct);
-router.post("/productCart/:productId/", authMiddleware, productCart);
+router.post(
+  "/productCart/:productId/",
+  authMiddleware,
+  productCart,
+  getProductReviews
+);
 router.get("/show-product", displayProduct);
 router.get("/cart", authMiddleware, getUserCart);
 

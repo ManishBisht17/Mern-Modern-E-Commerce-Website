@@ -5,21 +5,21 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, "please enter your name"],
     },
     password: {
       type: String,
-      required: true,
+      required: [true, "please enter your password"],
     },
     email: {
       type: String,
-      required: true,
+      required: [true, "please enter your email"],
       unique: true,
       match: /.+\@.+\..+/,
     },
     phone: {
       type: Number,
-      required: [true, "please enter you mobile number"],
+      required: [true, "please enter your mobile number"],
     },
     role: {
       type: String,

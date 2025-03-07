@@ -64,10 +64,7 @@ export const signup = async (req, res) => {
       data: newUser,
     });
   } catch (err) {
-    console.error(err);
-    res
-      .status(500)
-      .json({ message: "Error creating user", error: err.message });
+    res.status(500).json();
   }
 };
 
