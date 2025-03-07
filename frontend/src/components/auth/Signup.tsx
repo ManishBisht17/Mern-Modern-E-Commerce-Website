@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useState } from "react";
-import { BaseUrl } from "../../config";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Button from "../../utils/button/Button";
+import useSignUp from "../customHook/useSignUp";
 
 const Signup = () => {
   const [name, setName] = useState<string>("");
@@ -9,28 +9,17 @@ const Signup = () => {
   const [password, setPassword] = useState<string>("");
   const [phone, setPhone] = useState<number>();
   const [msg, setMsg] = useState("");
-  const navigate = useNavigate();
+  const [err, setErr] = useState("");
+  const {SignupData} = useSignUp()
 
   const handleClick = async () => {
-    await axios
-      .post(`${BaseUrl}/user/signup`, {
-        name,
-        email,
-        password,
-        phone,
-      })
-      .then((res) => {
-        if (!res.data.token) {
-          navigate("/signup");
-        } else {
-          localStorage.setItem("token", res.data?.token);
-          navigate("/");
-        }
-      })
-      .catch(() => {
-        setMsg("error signing up");
-      });
+    const res = await SignupData(name, email, password, phone)
+    if(res?.message||res?.error){
+      setMsg(res?.message) 
+      setErr(res?.error)
+    }
   };
+  
   return (
     <div className="h-screen w-full flex justify-center items-center">
       <div className="relative flex flex-col rounded-xl bg-transparent">
@@ -90,14 +79,14 @@ const Signup = () => {
               />
             </div>
           </div>
-          {msg ? <p className="text-center text-red-800">*{msg}</p> : ""}
-          <button
+          {msg ? <p className="text-center text-red-700">*{msg}</p> : ""}
+          {err ? <p className="text-center text-red-700">*{err}</p> : ""}
+          <Button
             onClick={handleClick}
             className="active:scale-95 mt-4 w-full rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            type="button"
           >
             Sign Up
-          </button>
+          </Button>
           <p className="flex justify-center mt-6 text-sm text-slate-600">
             Already, have an account?
             <Link

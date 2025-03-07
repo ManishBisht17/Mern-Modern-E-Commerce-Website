@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCartData } from '../../store/addToCart/thunk/addToCartThunk';
 import { AppDispatch } from '../../store/store';
 import { RootState } from '../../store/rootReducer';
+import Button from '../../utils/button/Button';
 
 const AddToBag = () => {
   const { value, loading, error } = useSelector( (state: RootState ) => state.cartProducts )
@@ -42,7 +43,7 @@ const AddToBag = () => {
               <p className="text-green-700 mb-4">AVAILABLE</p>
               
               <div className="flex gap-4 text-sm">
-                <button className="underline cursor-pointer">REMOVE</button>
+                <Button className="underline cursor-pointer">REMOVE</Button>
               </div>
             </div>
           </div>
@@ -68,7 +69,7 @@ const AddToBag = () => {
             </div>
             <div className="flex justify-between">
               <p>Estimated Tax</p>
-              <button className="underline">Calculate</button>
+              <Button className="underline">Calculate</Button>
             </div>
             <div className="flex justify-between text-lg font-medium">
               <p>Estimated Total</p>
@@ -76,19 +77,19 @@ const AddToBag = () => {
             </div>
           </div>
 
-          <button className="w-full bg-black active:scale-95 transition-all ease-in-out text-white py-3 mb-4">
+          <Button className="w-full bg-black active:scale-95 transition-all ease-in-out text-white py-3 mb-4">
             CHECKOUT
-          </button>
+          </Button>
 
           <div className="text-center mb-4">OR</div>
 
-          <button className="w-full border border-gray-300 active:scale-95 transition-all ease-in-out py-3 mb-4 flex items-center justify-center gap-2">
+          <Button className="w-full border border-gray-300 active:scale-95 transition-all ease-in-out py-3 mb-4 flex items-center justify-center gap-2">
             PAY WITH <img src="/api/placeholder/80/20" alt="PayPal" />
-          </button>
+          </Button>
 
-          <button className="w-full border border-gray-300 active:scale-95 transition-all ease-in-out py-3 flex items-center justify-center gap-2">
+          <Button className="w-full border border-gray-300 active:scale-95 transition-all ease-in-out py-3 flex items-center justify-center gap-2">
             PAY WITH <img src="/api/placeholder/80/20" alt="Amazon" />
-          </button>
+          </Button>
         </div>
 
       </div>

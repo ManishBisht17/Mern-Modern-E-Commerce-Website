@@ -7,6 +7,7 @@ import WomenDropdown from "../utils/DropDown/WomenDropdown";
 import MenDropdown from "../utils/DropDown/MenDropdown";
 import AccessoriesDropDown from "../utils/DropDown/AccessoriesDropDown";
 import UserProfileButton from "../utils/UserProfileButton";
+import Button from "../utils/button/Button";
 
 const Nav = () => {
   const searchRef = useRef<HTMLInputElement>(null);
@@ -68,13 +69,13 @@ const Nav = () => {
                     className="w-full ml-2 outline-none bg-zinc-300 text-zinc-800 p-2 rounded"
                     autoFocus
                   />
-                  <button
-                    onClick={() => setIsSearchOpen(false)}
-                    className="p-2 hover:text-gray-600"
-                  >
-                    <IoMdClose size={20} />
-                  </button>
-                </div>
+                  
+                  <Button 
+                  icon={<IoMdClose size={20} />} 
+                  onClick={() => setIsSearchOpen(false)} 
+                  className="p-2 hover:text-gray-600" />
+
+               </div>
               )}
 
               <div
@@ -88,21 +89,23 @@ const Nav = () => {
               </div>
 
               <div className="flex items-center gap-6">
-                <button
-                  className="hover:text-gray-600"
-                  onClick={() => setIsSearchOpen(!isSearchOpen)}
-                >
-                  <IoIosSearch size={20} />
-                </button>
+                <Button 
+                icon={<IoIosSearch size={20} />} 
+                className="hover:text-gray-600" 
+                onClick={() => setIsSearchOpen(!isSearchOpen)}/>
+                  
                 
                 <UserProfileButton/>
 
-                <button onClick={()=>navigate("/cart")} className="hover:text-gray-600 relative">
-                  <IoCartSharp size={20} />
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                <Button 
+                icon={<IoCartSharp size={20} />} 
+                onClick={()=>navigate("/cart")} 
+                className="hover:text-gray-600 relative"> 
+                  <span 
+                  className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                     0
                   </span>
-                </button>
+                </Button>
                 
               </div>
             </div>

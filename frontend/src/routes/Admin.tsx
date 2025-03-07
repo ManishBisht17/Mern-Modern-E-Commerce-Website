@@ -1,13 +1,14 @@
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import DashBoard from "../components/admin/pages/DashBoard";
 import Transaction from "../components/admin/pages/Transaction";
 import Customer from "../components/admin/pages/Customer";
 import Product from "../components/admin/pages/Product";
+import { Loader } from "lucide-react";
 
 const Admin = () => {
   return (
-    <Suspense>
+    <Suspense fallback={<Loader/>}>
       <Routes>
         <Route path="/dashboard" element={<DashBoard />} />
         <Route path="/transaction" element={<Transaction />} />

@@ -1,4 +1,3 @@
-import React from 'react'
 import AdminDashBoard from '../AdminDashBoard'
 
 const Product = () => {
