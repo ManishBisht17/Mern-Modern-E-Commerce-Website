@@ -1,6 +1,5 @@
 import Product from "../models/productModel.js";
 
-import jwt from "jsonwebtoken";
 import Cart from "../models/cartSchema.js";
 
 // Add product to cart

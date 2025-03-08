@@ -13,7 +13,7 @@ const router = express.Router();
 // Upload Product Image Route
 router.post("/upload", createProduct);
 //update the data
-router.post("/AddProductCart/:productId/", authMiddleware, productCart);
+router.post("/addToCart/:productId/", authMiddleware, productCart);
 router.get("/show-product", displayProduct);
 router.get("/getUserCart", authMiddleware, getUserCart);
 router.patch("/addReview/:productId", authMiddleware, addReview);
