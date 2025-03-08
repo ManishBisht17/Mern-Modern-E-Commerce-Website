@@ -4,7 +4,7 @@ const useAddToCart = () => {
     const CartData = async ( isLogin:string, productId:string|undefined) => {
         await axios
           .post(
-            `http://localhost/5000/product/cart/${productId}`,
+            `http://localhost/5000/product/addToCart/${productId}`,
             {
               headers: {
                 isLogin,

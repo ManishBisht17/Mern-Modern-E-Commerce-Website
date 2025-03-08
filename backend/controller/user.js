@@ -29,6 +29,17 @@ export const signup = async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
 
+    // Input validation
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({ message: "Email already registered" });
+    }
+
     // Hash Password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -56,15 +67,26 @@ export const signup = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 60 * 60 * 1000 * 28, // 28 days
+      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // Protect against CSRF
     });
+
+    // Return user data without password
+    const userData = {
+      _id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+      phone: newUser.phone
+    };
 
     res.status(201).json({
       message: "New User Account Created Successfully",
       token,
-      data: newUser,
+      data: userData,
     });
   } catch (err) {
-    res.status(500).json();
+    console.error("Signup error:", err);
+    res.status(500).json({ message: "Server error during signup" });
   }
 };
 

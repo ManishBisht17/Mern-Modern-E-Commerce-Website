@@ -10,7 +10,7 @@ router.post(
   "/productCart/:productId/",
   authMiddleware,
   productCart,
-  getProductReviews
+  // getProductReviews
 );
 router.get("/show-product", displayProduct);
 router.get("/cart", authMiddleware, getUserCart);
