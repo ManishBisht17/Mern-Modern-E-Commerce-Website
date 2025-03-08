@@ -22,7 +22,7 @@ const Signin = () => {
   return (
     <div className="h-screen w-full flex justify-center items-center">
       <div className="relative flex flex-col rounded-xl bg-transparent">
-        <h4 className="block text-xl font-medium text-slate-800">Sign In</h4>
+        <h4 className="block text-xl font-medium text-slate-800">Log In</h4>
         <p className="text-slate-500 font-light">Login in Here.</p>
         <form
           onSubmit={(e) => e.preventDefault()}
