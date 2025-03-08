@@ -7,7 +7,12 @@ import Cart from "../models/cartSchema.js";
 export const productCart = async (req, res) => {
   try {
     const productId = req.params.productId;
-    const token = req.cookies.token;
+    const token =
+      req.cookies.token ||
+      (req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer ")
+        ? req.headers.authorization.split(" ")[1]
+        : null);
 
     if (!token) {
       return res.status(401).json({ message: "Token not found" });
