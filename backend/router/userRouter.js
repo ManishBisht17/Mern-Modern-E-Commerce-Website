@@ -14,6 +14,6 @@ router.post("/signup", signup);
 router.post("/login", userlogin);
 router.delete("/delete", deleteUser);
 router.post("/logout", authMiddleware, logout);
-router.get("/protected-route", authMiddleware);
+// router.get("/protected-route", authMiddleware);
 
 export default router;

@@ -20,5 +20,5 @@ State Management: Redux Toolkit
  <h1>📂 Project Structure</h1>
 
 /backend  -> Express.js API (routes, controllers, models)  
-/frontend -> React app (components, pages, Redux state, customHook, axios, routing, redux-Thunk) 
+/frontend -> React app (components, pages, Redux state, customHook, axios, routing) 
  <h1>Deployed website ->  </h1>

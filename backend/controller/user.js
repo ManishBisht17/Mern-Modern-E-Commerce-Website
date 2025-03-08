@@ -8,27 +8,32 @@ const JWT_SECRET = process.env.JWT_SECRET_KEY;
 
 // Authentication Middleware
 export const authMiddleware = async (req, res, next) => {
-  const token = req.cookies.token;
+  // Get token from cookie or Authorization header
+  const token =
+    req.cookies.token ||
+    (req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer ")
+      ? req.headers.authorization.split(" ")[1]
+      : null);
 
   if (!token) {
     return res.status(401).json({ message: "Unauthorized: No token provided" });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(403).json({ message: "Invalid or expired token" });
-    }
-
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;
-    next(); //
-  });
+    next();
+  } catch (err) {
+    return res.status(403).json({ message: "Invalid or expired token" });
+  }
 };
-
 // Signup Route
 export const signup = async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
 
+<<<<<<< HEAD
     // Input validation
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
@@ -40,6 +45,13 @@ export const signup = async (req, res) => {
       return res.status(409).json({ message: "Email already registered" });
     }
 
+=======
+    // Check if all required fields are provided
+    if (!name || !email || !password || !phone) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+>>>>>>> 6122aecba3a4310a33a63b570852a6207e0fd56f
     // Hash Password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -58,9 +70,7 @@ export const signup = async (req, res) => {
     const token = jwt.sign(
       { id: newUser._id, email: newUser.email },
       JWT_SECRET,
-      {
-        expiresIn: "28d",
-      }
+      { expiresIn: "28d" }
     );
 
     // Store token in a cookie
@@ -85,8 +95,20 @@ export const signup = async (req, res) => {
       data: userData,
     });
   } catch (err) {
+<<<<<<< HEAD
     console.error("Signup error:", err);
     res.status(500).json({ message: "Server error during signup" });
+=======
+    console.error(err);
+
+    // Handle Mongoose Validation Error
+    if (err.name === "ValidationError") {
+      const messages = Object.values(err.errors).map((error) => error.message);
+      return res.status(400).json({ message: messages.join(", ") });
+    }
+
+    res.status(500).json({ message: "Error creating user" });
+>>>>>>> 6122aecba3a4310a33a63b570852a6207e0fd56f
   }
 };
 
@@ -124,8 +146,13 @@ export const userlogin = async (req, res) => {
     });
 
     res.status(200).json({
-      message: "User Logged In Successfully",
-      token,
+      message: "Login successful",
+      token: token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
     });
   } catch (error) {
     console.log("Error in User Login:", error);
@@ -136,32 +163,34 @@ export const userlogin = async (req, res) => {
 //User Logout
 export const logout = async (req, res) => {
   try {
-    const token = req.cookies.token;
-    if (!token) {
-      return res.status(401).json({ message: "No user is logged in" });
-    }
+    // The middleware already verified the token and added user info
+    const userId = req.user.id;
 
-    const decoded = jwt.verify(token, JWT_SECRET);
-    const user = await User.findById(decoded.id);
+    // Find the user
+    const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Clear the cookie
     res.clearCookie("token", {
       httpOnly: true,
       secure: true,
       sameSite: "strict",
     });
 
+    // Respond with success message
     res.status(200).json({
       data: user.name,
-      message: `${user.name} Logged Out Successfully`,
+      message: `${user.name} logged out successfully`,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error logging out", error: error.message });
+    console.error("Error during logout:", error.message);
+    res.status(500).json({
+      message: "Error logging out",
+      error: error.message,
+    });
   }
 };
 

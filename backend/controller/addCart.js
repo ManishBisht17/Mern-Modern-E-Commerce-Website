@@ -1,24 +1,19 @@
 import Product from "../models/productModel.js";
 
-import jwt from "jsonwebtoken";
 import Cart from "../models/cartSchema.js";
 
 // Add product to cart
 export const productCart = async (req, res) => {
   try {
     const productId = req.params.productId;
-    const token = req.cookies.token;
+    const userId = req.user.id;
 
-    if (!token) {
+    if (!userId) {
       return res.status(401).json({ message: "Token not found" });
     }
     if (!productId) {
       return res.status(400).json({ message: "Product ID is required" });
     }
-
-    // Verify token and get user ID
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decoded.id;
 
     // Check if the product exists
     const product = await Product.findById(productId);
@@ -56,14 +51,10 @@ export const productCart = async (req, res) => {
 // Get user cart
 export const getUserCart = async (req, res) => {
   try {
-    const token = req.cookies.token;
-    if (!token) {
-      return res.status(401).json({ message: "Token not found" });
+    const userId = req.user.id;
+    if (!userId) {
+      return res.status(401).json({ message: "User not found" });
     }
-
-    // Decode user ID from token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decoded.id;
 
     // Find cart by user ID and populate product details
     const cart = await Cart.findOne({ user: userId }).populate(
