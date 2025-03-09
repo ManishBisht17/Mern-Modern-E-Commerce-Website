@@ -1,13 +1,10 @@
 import axios from "axios";
 
 const useAddToCart = () => {
-    const CartData = async (count:number, isLogin:string, productId:string|undefined) => {
+    const CartData = async ( isLogin:string, productId:string|undefined) => {
         await axios
           .post(
             `http://localhost/5000/product/cart/${productId}`,
-            {
-              quantity: count,
-            },
             {
               headers: {
                 isLogin,

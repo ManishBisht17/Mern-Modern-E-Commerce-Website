@@ -11,7 +11,7 @@ const useSignIn = () => {
       localStorage.setItem("token", res.token);
       navigate("/"); 
     } else {
-      navigate("/signin");
+      navigate("/login");
     }
     
     return res;

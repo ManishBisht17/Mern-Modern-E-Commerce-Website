@@ -1,36 +1,15 @@
-import axios from "axios";
 import ProductCard from "../../utils/Card/ProductCard";
 import Nav from "../Nav";
-import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   selectProduct,
-  setProduct,
 } from "../../store/productCardView/productCardSlice";
+import useWomenData from "../customHook/useWomenData";
 
-interface Product {
-  _id: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-  // Add more fields based on your API response
-}
+
 const Womensection = () => {
   const dispatch = useDispatch();
-  const [womenData, setWomenData] = useState<Product[]>([]);
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:5000/product/show-product`)
-      .then((res) => {
-        setWomenData(res.data.products);
-        dispatch(setProduct(res.data.products));
-      })
-      .catch((err) => {
-        console.log("something went wrong while getting the womens data" + err);
-      });
-  }, []);
+  const {womenData} = useWomenData()
 
   return (
     <>

@@ -1,10 +1,20 @@
+import React from 'react';
 
-const OptionImgCard = ({photo}:{photo:string}) => {
-  return (
-    <div className="h-28 w-20 ">
-        <img className="h-full w-full" src={photo} alt="" />
-    </div>
-  )
+interface OptionImgCardProps {
+  photo: string;
+  onClick?: () => void;
+  isActive?: boolean;
 }
 
-export default OptionImgCard
+const OptionImgCard = ({ photo, onClick, isActive = false }: OptionImgCardProps) => {
+  return (
+    <div 
+      className={`h-28 w-20 cursor-pointer transition-all ${isActive ? 'border-2 border-amber-500 scale-105' : ''}`}
+      onClick={onClick}
+    >
+      <img className="h-full w-full object-cover" src={photo} alt="" />
+    </div>
+  );
+};
+
+export default OptionImgCard;
