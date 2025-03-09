@@ -11,7 +11,7 @@ export const authMiddleware = async (req, res, next) => {
   // Get token from cookie or Authorization header
   const token =
     req.cookies.token ||
-    (req.headers.authorization &&
+    (req.headers.authorization ||
     req.headers.authorization.startsWith("Bearer ")
       ? req.headers.authorization.split(" ")[1]
       : null);
