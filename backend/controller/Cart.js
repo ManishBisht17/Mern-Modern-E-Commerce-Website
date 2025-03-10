@@ -84,7 +84,8 @@ export const removeCart = async (req, res) => {
 
     //filter out the product from the cart
     const newProducts = cart.products.filter(
-      (item) => item.product.toString() !== productId
+      (item) => item !== productId
+      // (item) => item.product.toString() !== productId
     );
 
     if (newProducts.length === cart.products.length) {
