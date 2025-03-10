@@ -5,7 +5,7 @@ import {
   addReview,
   getProductReviews,
 } from "../controller/product.js";
-import { getUserCart, productCart } from "../controller/addCart.js";
+import { getUserCart, productCart, removeCart } from "../controller/Cart.js";
 import { authMiddleware } from "../controller/user.js";
 
 const router = express.Router();
@@ -18,5 +18,6 @@ router.get("/show-product", displayProduct);
 router.get("/getUserCart", authMiddleware, getUserCart);
 router.patch("/addReview/:productId", authMiddleware, addReview);
 router.get("/getProductReviews/:productId", getProductReviews);
+router.post("/removeCart/:productId", authMiddleware, removeCart);
 
 export default router;
