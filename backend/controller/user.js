@@ -28,6 +28,7 @@ export const authMiddleware = async (req, res, next) => {
     return res.status(403).json({ message: "Invalid or expired token" });
   }
 };
+
 // Signup Route
 export const signup = async (req, res) => {
   try {
@@ -63,12 +64,22 @@ export const signup = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 60 * 60 * 1000 * 28, // 28 days
+      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // Protect against CSRF
     });
+
+    // Return user data without password
+    const userData = {
+      _id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+      phone: newUser.phone
+    };
 
     res.status(201).json({
       message: "New User Account Created Successfully",
       token,
-      data: newUser,
+      data: userData,
     });
   } catch (err) {
     console.error(err);
