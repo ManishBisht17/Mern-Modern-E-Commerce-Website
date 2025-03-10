@@ -11,7 +11,7 @@ export const authMiddleware = async (req, res, next) => {
   // Get token from cookie or Authorization header
   const token =
     req.cookies.token ||
-    (req.headers.authorization &&
+    (req.headers.authorization ||
     req.headers.authorization.startsWith("Bearer ")
       ? req.headers.authorization.split(" ")[1]
       : null);
@@ -28,30 +28,17 @@ export const authMiddleware = async (req, res, next) => {
     return res.status(403).json({ message: "Invalid or expired token" });
   }
 };
+
 // Signup Route
 export const signup = async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
 
-<<<<<<< HEAD
-    // Input validation
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(409).json({ message: "Email already registered" });
-    }
-
-=======
     // Check if all required fields are provided
     if (!name || !email || !password || !phone) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
->>>>>>> 6122aecba3a4310a33a63b570852a6207e0fd56f
     // Hash Password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -95,10 +82,6 @@ export const signup = async (req, res) => {
       data: userData,
     });
   } catch (err) {
-<<<<<<< HEAD
-    console.error("Signup error:", err);
-    res.status(500).json({ message: "Server error during signup" });
-=======
     console.error(err);
 
     // Handle Mongoose Validation Error
@@ -108,7 +91,6 @@ export const signup = async (req, res) => {
     }
 
     res.status(500).json({ message: "Error creating user" });
->>>>>>> 6122aecba3a4310a33a63b570852a6207e0fd56f
   }
 };
 

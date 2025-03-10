@@ -1,10 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BaseUrl } from "../../../config";
 
-export const fetchCartData = createAsyncThunk('cardProducts/fetchCartData', async(_,{rejectWithValue}) => {
+export const fetchCartData = createAsyncThunk('cardProducts/fetchCartData', async(token,{rejectWithValue}) => {
     try{
-        const data = await axios.get('');
-        return data.data
+        const res = await axios.get(`${BaseUrl}/product/getUserCart`,
+            {
+                headers:{
+                    Authorization: `Bearer ${token}`
+                }
+            });
+        return res.data
     }catch(error){  
         return rejectWithValue('')
     }

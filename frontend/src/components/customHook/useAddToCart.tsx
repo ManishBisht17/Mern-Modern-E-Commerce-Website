@@ -1,13 +1,17 @@
 import axios from "axios";
+import { BaseUrl } from "../../config";
 
 const useAddToCart = () => {
-    const CartData = async ( isLogin:string, productId:string|undefined) => {
-        await axios
+  try{
+
+    const CartData = async ( token:string, productId:string|undefined) => {
+      await axios
           .post(
-            `http://localhost/5000/product/addToCart/${productId}`,
+            `${BaseUrl}/product/addToCart/${productId}`,
+            {},
             {
               headers: {
-                isLogin,
+                Authorization: `Bearer ${token}`,
               },
             }
           )
@@ -17,8 +21,11 @@ const useAddToCart = () => {
           .catch((err) => {
             console.log("error in add to cart productview"+ err);
           });
-    }
-  return {CartData}
+        }
+        return {CartData}
+      }catch(err){
+        console.log(err)
+      }
 }
 
 export default useAddToCart

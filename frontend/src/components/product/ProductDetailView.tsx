@@ -44,11 +44,10 @@ const ProductDetailView = () => {
   };
 
   const handleAddToCart = async () => {
-    const isLogin = localStorage.getItem("token");
-    if (!isLogin) navigate("/login");
-    if (isLogin) {
-      const res = await CartData(isLogin, productId);
-      console.log(res);
+    const token = localStorage.getItem("token");
+    if (!token) navigate("/login");
+    if (token) {
+       await CartData(token, productId);
     }
   };
 

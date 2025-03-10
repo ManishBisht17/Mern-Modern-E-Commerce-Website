@@ -1,4 +1,6 @@
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, IterationCcw } from 'lucide-react';
+import { LiaRupeeSignSolid } from "react-icons/lia";
+
 import Nav from '../Nav';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,47 +8,65 @@ import { fetchCartData } from '../../store/addToCart/thunk/addToCartThunk';
 import { AppDispatch } from '../../store/store';
 import { RootState } from '../../store/rootReducer';
 import Button from '../../utils/button/Button';
+import { VscLoading } from 'react-icons/vsc';
+import { useNavigate } from 'react-router-dom';
 
 const AddToBag = () => {
   const { value, loading, error } = useSelector( (state: RootState ) => state.cartProducts )
   const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
+
+  const handleDelete = () => {
+
+  }
 
   useEffect(() => {
-   dispatch(fetchCartData()) 
+    const token = localStorage.getItem("token")
+    if(!token) navigate("/login")
+    if(token){
+        dispatch(fetchCartData(token)) 
+    }
   },[dispatch])
 
+  if(!value){return error?.message}
+  if(loading){return <VscLoading />}
   return (
     <>
     <Nav/>
       <div className="grid grid-cols-12 gap-8 justify-center mt-24 mx-8">
-        <div className="col-span-6">
+        <div className="col-span-6 flex flex-col gap-16">
         
-        {/* {value?.map( elem => <h1>cart</h1>)} */}
+        {value?.products.map( items =>{
+         return <>
           <div className="flex w-full justify-end gap-8">
             <div className="w-64 bg-red-200">
               <img 
-                src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=3600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bmlrZXxlbnwwfHwwfHx8MA%3D%3D" 
+                src={items.product.imageUrl[0]}
                 alt="Gucci Signoria slingback pump"
                 className="w-full h-full object-cover rounded"
-              />
+                />
             </div>
             <div className="flex flex-col min-w-96 items-end">
-              <h3 className="text-lg mb-2">Gucci Signoria slingback pump</h3>
-              <p className="text-sm text-gray-600 mb-2">Variation: dark green patent leather</p>
-              <p className="text-sm text-gray-600 mb-4">Size: MD</p>
+              <h3 className="text-lg mb-2">{items.product.title}</h3>
+              <p className="text-xl text-gray-600 mb-2">{items.product.name}</p>
+              <p className="text-sm text-gray-600 mb-2">{items.product.brand}</p>
+              <p className="text-sm text-gray-600 mb-4">Size: {items.product.size}</p>
               
               <div className="flex items-center gap-4 mb-4">
-                <p>QTY : 1</p>|
-                <p className="text-lg">$ 1,150</p>
+                <p>QTY : {items.quantity}</p>|
+                <p className="text-lg flex items-center justify-center"><LiaRupeeSignSolid/>{items.product.price}</p>
               </div>
 
-              <p className="text-green-700 mb-4">AVAILABLE</p>
+              <p className={` ${items.product.stock?'text-green-700':'text-red-700'} mb-4`}>{items.product.stock ?` AVALABLE`:` OUT OF STOCK`}</p>
               
               <div className="flex gap-4 text-sm">
-                <Button className="underline cursor-pointer">REMOVE</Button>
+                <Button onClick={handleDelete} className="underline cursor-pointer">REMOVE</Button>
               </div>
             </div>
           </div>
+                </>
+          
+        })}
 
         </div>
 
