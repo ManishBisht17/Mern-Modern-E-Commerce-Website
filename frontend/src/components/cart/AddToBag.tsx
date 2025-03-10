@@ -1,8 +1,7 @@
-import { ChevronDown, IterationCcw } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { LiaRupeeSignSolid } from "react-icons/lia";
-
 import Nav from '../Nav';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCartData } from '../../store/addToCart/thunk/addToCartThunk';
 import { AppDispatch } from '../../store/store';
@@ -10,64 +9,154 @@ import { RootState } from '../../store/rootReducer';
 import Button from '../../utils/button/Button';
 import { VscLoading } from 'react-icons/vsc';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { BaseUrl } from '../../config';
+import { clearCartError } from '../../store/addToCart/slice/cartProductSlice';
 
 const AddToBag = () => {
-  const { value, loading, error } = useSelector( (state: RootState ) => state.cartProducts )
-  const dispatch = useDispatch<AppDispatch>()
-  const navigate = useNavigate()
+  const { value, loading, error } = useSelector((state: RootState) => state.cartProducts);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const token = localStorage.getItem("token");
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
-  const handleDelete = () => {
-
-  }
+  const handleDelete = async (productId: string) => {
+    try {
+      setIsDeleting(true);
+      await axios.post(
+        `${BaseUrl}/product/removeCart/${productId}`,
+        {},
+        { 
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
+      );
+      console.log("Removed item with id: " + productId);
+      
+      // Properly call the thunk with the token
+      if (token) {
+        dispatch(fetchCartData(token));
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
-    if(!token) navigate("/login")
-    if(token){
-        dispatch(fetchCartData(token)) 
+    if (!token) {
+      navigate("/login");
+      return;
     }
-  },[dispatch])
+    
+    dispatch(fetchCartData(token));
+    console.log(value)
+    // Clean up any errors when component unmounts
+    return () => {
+      dispatch(clearCartError());
+    };
+  }, [dispatch, token]);
 
-  if(!value){return error?.message}
-  if(loading){return <VscLoading />}
+  // Show loading state
+  if (loading || isDeleting) {
+    return (
+      <>
+        <Nav />
+        <div className="flex justify-center items-center h-screen">
+          <VscLoading className="animate-spin text-4xl" />
+        </div>
+      </>
+    );
+  }
+
+  // Handle errors
+  if (error) {
+    return (
+      <>
+        <Nav />
+        <div className="flex justify-center items-center h-screen">
+          <div className="text-center">
+            <p className="font-semibold text-xl mb-4">{error.message}</p>
+            <Button 
+              onClick={() => navigate("/")} 
+              className="bg-black text-white py-2 px-4 rounded"
+            >
+              Continue Shopping
+            </Button>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // Handle empty cart
+  if (!value?.products || value.products.length === 0) {
+    return (
+      <>
+        <Nav />
+        <div className="flex flex-col items-center justify-center h-screen">
+          <h2 className="text-2xl mb-4">Your cart is empty</h2>
+          <Button 
+            onClick={() => navigate("/")} 
+            className="bg-black text-white py-2 px-4 rounded"
+          >
+            Continue Shopping
+          </Button>
+        </div>
+      </>
+    );
+  }
+
+  // Calculate totals
+  const subtotal = value.products.reduce((total, item) => {
+    return total + (Number(item.product.price) * item.quantity);
+  }, 0);
+
   return (
     <>
-    <Nav/>
+      <Nav />
       <div className="grid grid-cols-12 gap-8 justify-center mt-24 mx-8">
         <div className="col-span-6 flex flex-col gap-16">
-        
-        {value?.products.map( items =>{
-         return <>
-          <div className="flex w-full justify-end gap-8">
-            <div className="w-64 bg-red-200">
-              <img 
-                src={items.product.imageUrl[0]}
-                alt="Gucci Signoria slingback pump"
-                className="w-full h-full object-cover rounded"
+          {value.products.map((item) => (
+            <div key={item.product._id} className="flex w-full justify-end gap-8">
+              <div className="w-64 bg-red-200">
+                <img 
+                  src={item.product.imageUrl[0]}
+                  alt={item.product.title}
+                  className="w-full h-full object-cover rounded"
                 />
-            </div>
-            <div className="flex flex-col min-w-96 items-end">
-              <h3 className="text-lg mb-2">{items.product.title}</h3>
-              <p className="text-xl text-gray-600 mb-2">{items.product.name}</p>
-              <p className="text-sm text-gray-600 mb-2">{items.product.brand}</p>
-              <p className="text-sm text-gray-600 mb-4">Size: {items.product.size}</p>
-              
-              <div className="flex items-center gap-4 mb-4">
-                <p>QTY : {items.quantity}</p>|
-                <p className="text-lg flex items-center justify-center"><LiaRupeeSignSolid/>{items.product.price}</p>
               </div>
+              <div className="flex flex-col min-w-96 items-end">
+                <h3 className="text-lg mb-2">{item.product.title}</h3>
+                <p className="text-xl text-gray-600 mb-2">{item.product.name}</p>
+                <p className="text-sm text-gray-600 mb-2">{item.product.brand}</p>
+                <p className="text-sm text-gray-600 mb-4">Size: {item.product.size}</p>
+                
+                <div className="flex items-center gap-4 mb-4">
+                  <p>QTY: {item.quantity}</p>|
+                  <p className="text-lg flex items-center justify-center">
+                    <LiaRupeeSignSolid />{item.product.price}
+                  </p>
+                </div>
 
-              <p className={` ${items.product.stock?'text-green-700':'text-red-700'} mb-4`}>{items.product.stock ?` AVALABLE`:` OUT OF STOCK`}</p>
-              
-              <div className="flex gap-4 text-sm">
-                <Button onClick={handleDelete} className="underline cursor-pointer">REMOVE</Button>
+                <p className={`${item.product.stock ? 'text-green-700' : 'text-red-700'} mb-4`}>
+                  {item.product.stock ? 'AVAILABLE' : 'OUT OF STOCK'}
+                </p>
+                
+                <div className="flex gap-4 text-sm">
+                  <Button 
+                    onClick={() => handleDelete(item.product._id)} 
+                    className="underline cursor-pointer"
+                    disabled={isDeleting}
+                  >
+                    {isDeleting ? 'REMOVING...' : 'REMOVE'}
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-                </>
-          
-        })}
-
+          ))}
         </div>
 
         {/* Order Summary */}
@@ -78,7 +167,7 @@ const AddToBag = () => {
           <div className="space-y-4 mb-6">
             <div className="flex justify-between">
               <p>Subtotal</p>
-              <p>$1,150</p>
+              <p className="flex items-center"><LiaRupeeSignSolid className="inline" />{subtotal}</p>
             </div>
             <div className="flex justify-between">
               <p>Shipping</p>
@@ -93,25 +182,33 @@ const AddToBag = () => {
             </div>
             <div className="flex justify-between text-lg font-medium">
               <p>Estimated Total</p>
-              <p>$ 1,150</p>
+              <p className="flex items-center"><LiaRupeeSignSolid className="inline" />{subtotal}</p>
             </div>
           </div>
 
-          <Button className="w-full bg-black active:scale-95 transition-all ease-in-out text-white py-3 mb-4">
+          <Button 
+            className="w-full bg-black active:scale-95 transition-all ease-in-out text-white py-3 mb-4"
+            disabled={value.products.length === 0}
+          >
             CHECKOUT
           </Button>
 
           <div className="text-center mb-4">OR</div>
 
-          <Button className="w-full border border-gray-300 active:scale-95 transition-all ease-in-out py-3 mb-4 flex items-center justify-center gap-2">
+          <Button 
+            className="w-full border border-gray-300 active:scale-95 transition-all ease-in-out py-3 mb-4 flex items-center justify-center gap-2"
+            disabled={value.products.length === 0}
+          >
             PAY WITH <img src="/api/placeholder/80/20" alt="PayPal" />
           </Button>
 
-          <Button className="w-full border border-gray-300 active:scale-95 transition-all ease-in-out py-3 flex items-center justify-center gap-2">
+          <Button 
+            className="w-full border border-gray-300 active:scale-95 transition-all ease-in-out py-3 flex items-center justify-center gap-2"
+            disabled={value.products.length === 0}
+          >
             PAY WITH <img src="/api/placeholder/80/20" alt="Amazon" />
           </Button>
         </div>
-
       </div>
     </>
   );

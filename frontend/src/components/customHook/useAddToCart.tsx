@@ -3,7 +3,6 @@ import { BaseUrl } from "../../config";
 
 const useAddToCart = () => {
   try{
-
     const CartData = async ( token:string, productId:string|undefined) => {
       await axios
           .post(
@@ -16,7 +15,7 @@ const useAddToCart = () => {
             }
           )
           .then((res) => {
-            console.log(res.data.name);
+            console.log(res.data.message);
           })
           .catch((err) => {
             console.log("error in add to cart productview"+ err);

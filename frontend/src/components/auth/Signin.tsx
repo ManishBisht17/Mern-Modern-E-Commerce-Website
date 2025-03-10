@@ -19,6 +19,7 @@ const Signin = () => {
     setEmail("");
     setPassword("");
   };
+  
   return (
     <div className="h-screen w-full flex justify-center items-center">
       <div className="relative flex flex-col rounded-xl bg-transparent">
@@ -35,6 +36,7 @@ const Signin = () => {
             <div className="w-full max-w-sm min-w-[200px]">
               <label className="block mb-2 text-sm text-slate-600">Email</label>
               <input
+              value={email}
                 type="email"
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
@@ -46,6 +48,7 @@ const Signin = () => {
                 Password
               </label>
               <input
+              value={password}
                 type="password"
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
