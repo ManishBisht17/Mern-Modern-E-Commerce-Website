@@ -8,7 +8,6 @@ export const productCart = async (req, res) => {
     const productId = req.params.productId;
     const userId = req.user.id;
     const { quantity } = req.body;
-    console.log(quantity);
 
     if (!userId) {
       return res.status(401).json({ message: "Token not found" });

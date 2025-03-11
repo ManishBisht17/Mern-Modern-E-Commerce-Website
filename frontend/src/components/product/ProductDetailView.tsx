@@ -47,7 +47,7 @@ const ProductDetailView = () => {
     const token = localStorage.getItem("token");
     if (!token) navigate("/login");
     if (token) {
-       await CartData(token, productId);
+       await CartData(token, productId, count);
     }
   };
 
@@ -58,6 +58,12 @@ const ProductDetailView = () => {
   useEffect(() => {
     setData(singleProductData);
   }, [singleProductData]);
+
+  useEffect(() => {
+    if (!singleProductData && productId) {
+      dispatch(fetchProductById(productId));
+    }
+  }, [productId, singleProductData]);
 
   return (
     <>
@@ -146,11 +152,11 @@ const ProductDetailView = () => {
               <div className="flex gap-8 w-full">
                 <Button
                   onClick={handleAddToCart}
-                  className="py-4 bg-black w-full rounded text-white"
+                  className="py-4 active:scale-95 bg-black w-full rounded text-white"
                 >
                   Add to cart
                 </Button>
-                <Button className="py-4 bg-black w-full rounded text-white">
+                <Button className="py-4 active:scale-95 bg-black w-full rounded text-white">
                   buy product
                 </Button>
                 {!data && (

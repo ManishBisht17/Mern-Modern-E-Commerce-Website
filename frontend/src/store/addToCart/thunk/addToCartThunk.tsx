@@ -14,6 +14,6 @@ export const fetchCartData = createAsyncThunk('cardProducts/fetchCartData', asyn
         // Return the data with a check if it's empty
         return res.data;
     } catch (error) {  
-        return rejectWithValue(error?.message || 'Failed to fetch cart');
+        return rejectWithValue(error?.message);
     }
 });

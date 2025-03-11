@@ -9,7 +9,9 @@ import AccessoriesDropDown from "../utils/DropDown/AccessoriesDropDown";
 import UserProfileButton from "../utils/UserProfileButton";
 import Button from "../utils/button/Button";
 
+
 const Nav = () => {
+
   const searchRef = useRef<HTMLInputElement>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const navigate = useNavigate();
@@ -100,11 +102,7 @@ const Nav = () => {
                 <Button 
                 icon={<IoCartSharp size={20} />} 
                 onClick={()=>navigate("/cart")} 
-                className="hover:text-gray-600 relative"> 
-                  <span 
-                  className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                    0
-                  </span>
+                className="hover:text-gray-600 relative">
                 </Button>
                 
               </div>

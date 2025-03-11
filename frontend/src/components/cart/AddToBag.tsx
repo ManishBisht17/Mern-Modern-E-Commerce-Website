@@ -19,7 +19,6 @@ const AddToBag = () => {
   const token = localStorage.getItem("token");
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-
   const handleDelete = async (productId: string) => {
     try {
       setIsDeleting(true);
@@ -32,9 +31,7 @@ const AddToBag = () => {
           }
         }
       );
-      console.log("Removed item with id: " + productId);
       
-      // Properly call the thunk with the token
       if (token) {
         dispatch(fetchCartData(token));
       }
@@ -52,14 +49,11 @@ const AddToBag = () => {
     }
     
     dispatch(fetchCartData(token));
-    console.log(value)
-    // Clean up any errors when component unmounts
     return () => {
       dispatch(clearCartError());
     };
   }, [dispatch, token]);
-
-  // Show loading state
+  
   if (loading || isDeleting) {
     return (
       <>
@@ -71,7 +65,6 @@ const AddToBag = () => {
     );
   }
 
-  // Handle errors
   if (error) {
     return (
       <>
@@ -91,23 +84,23 @@ const AddToBag = () => {
     );
   }
 
-  // Handle empty cart
-  if (!value?.products || value.products.length === 0) {
-    return (
-      <>
-        <Nav />
-        <div className="flex flex-col items-center justify-center h-screen">
-          <h2 className="text-2xl mb-4">Your cart is empty</h2>
-          <Button 
-            onClick={() => navigate("/")} 
-            className="bg-black text-white py-2 px-4 rounded"
-          >
-            Continue Shopping
-          </Button>
-        </div>
-      </>
-    );
-  }
+if (!value?.products || value.products.length === 0) {
+  return (
+    <>
+      <Nav />
+      <div className="flex flex-col items-center justify-center h-screen">
+        <h2 className="text-2xl mb-4">Your cart is empty</h2>
+        <Button 
+          onClick={() => navigate("/")} 
+          className="bg-black text-white py-2 px-4 rounded"
+        >
+          Continue Shopping
+        </Button>
+      </div>
+    </>
+  );
+}
+
 
   // Calculate totals
   const subtotal = value.products.reduce((total, item) => {
@@ -115,7 +108,7 @@ const AddToBag = () => {
   }, 0);
 
   return (
-    <>
+    <> 
       <Nav />
       <div className="grid grid-cols-12 gap-8 justify-center mt-24 mx-8">
         <div className="col-span-6 flex flex-col gap-16">
