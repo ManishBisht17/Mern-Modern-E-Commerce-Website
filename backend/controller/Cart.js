@@ -102,3 +102,4 @@ export const removeCart = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+3;
