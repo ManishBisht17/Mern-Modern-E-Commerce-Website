@@ -2,6 +2,8 @@ import React, { Suspense } from "react";
 import Home from "./components/Home";
 import { Routes, Route } from "react-router-dom";
 import { Loader } from "lucide-react";
+import Mensection from "./components/section/Mensection";
+import ProfileView from "./components/user/ProfileView";
 const AddToBag = React.lazy(() => import("./components/cart/AddToBag"));
 const Signup = React.lazy(() => import("./components/auth/Signup"));
 const Signin = React.lazy(() => import("./components/auth/Signin"));
@@ -22,6 +24,8 @@ function App() {
         <Route path="/login" element={<Signin />} />
         <Route path="/cart" element={<AddToBag />} />
         <Route path="/womens" element={<Womensection />} />
+        <Route path="/mens" element={<Mensection />} />
+        <Route path="/profile" element={<ProfileView />} />
         <Route
           path="/item/product/:productId"
           element={<ProductDetailView />}

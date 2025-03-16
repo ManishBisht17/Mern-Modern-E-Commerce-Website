@@ -114,7 +114,7 @@ if (!value?.products || value.products.length === 0) {
         <div className="col-span-6 flex flex-col gap-16">
           {value.products.map((item) => (
             <div key={item.product._id} className="flex w-full justify-end gap-8">
-              <div className="w-64 bg-red-200">
+              <div className="w-64">
                 <img 
                   src={item.product.imageUrl[0]}
                   alt={item.product.title}
