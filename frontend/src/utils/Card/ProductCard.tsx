@@ -21,7 +21,7 @@ const ProductCard = ({
   };
 
   return (
-    <div onClick={handleRoute} className="relative h-[60vh] w-sm m-1 group">
+    <div onClick={handleRoute} className="relative h-[60vh] w-sm m-4 sm:m-1 group">
       <div className="relative h-full w-full overflow-hidden">
         <img
           className="w-full z-50 h-full object-contain group-hover:scale-105 transition-transform duration-300"

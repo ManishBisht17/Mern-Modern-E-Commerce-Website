@@ -9,26 +9,27 @@ interface Product {
     price: number;
     imageUrl: string;
     category: string;
+    type?: string;
     // Add more fields based on your API response
   }
 
-const useWomenData = () => {
+const useMenData = () => {
     const dispatch = useDispatch()
-    const [womenData, setWomenData] = useState<Product[]>([]);
+    const [menData, setMenData] = useState<Product[]>([]);
     useEffect(()=>{
         axios
           .get(`http://localhost:5000/product/show-product`)
           .then((res) => {
-            const femailCloth = res.data.products.filter(item => item.type === "female")
-            setWomenData(femailCloth);
-            dispatch(setProduct(femailCloth));
+            const filterMen = res.data.products.filter((item: {item: Product}) => item.type === 'male')
+            setMenData(filterMen);
+            dispatch(setProduct(filterMen));
           })
           .catch((err) => {
             console.log("something went wrong while getting the womens data" + err);
           });
 
     },[])
-  return {womenData}
+  return {menData}
 }
 
-export default useWomenData
+export default useMenData

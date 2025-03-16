@@ -8,7 +8,7 @@ interface ProductImgCardProps {
 const ProductImgCard = forwardRef<HTMLDivElement, ProductImgCardProps>(({ photo }, ref) => {
   return (
     <div ref={ref}  >
-      <div className="card h-[80%] w-md bg-amber-400">
+      <div className="card h-[80%] w-sm sm:w-md bg-amber-400">
         <img className="h-full w-full object-cover" src={photo} alt="" />
       </div>
     </div>

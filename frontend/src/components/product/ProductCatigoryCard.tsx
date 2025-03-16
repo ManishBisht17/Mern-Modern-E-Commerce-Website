@@ -13,15 +13,15 @@ type productType = {
 
 const productsCardImg: productType = {
     men: {
-        src: "https://i.pinimg.com/474x/7d/42/6e/7d426ef12e13eaca86168e0631afe83f.jpg",
+        src: "/male_model.png",
         routeTo:"/mens"
     },
     women: {
-        src: "https://i.pinimg.com/736x/e4/51/9a/e4519a278876324772515974182c97d5.jpg",
+        src: "/women_model.png",
         routeTo:"/womens"
     },
     accessary: {
-        src: "https://i.pinimg.com/474x/b6/60/f4/b660f45f52c5cdec69a3d7d3284365ef.jpg",
+        src: "/second.png",
         routeTo:"/accessary"
     },
 }
