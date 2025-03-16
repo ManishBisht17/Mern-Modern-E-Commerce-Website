@@ -27,4 +27,3 @@ export const getAdminDashboard = (req, res) => {
     user: req.user,
   });
 };
-// admin dashboard

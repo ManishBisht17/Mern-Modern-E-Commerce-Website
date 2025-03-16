@@ -21,6 +21,7 @@
     "express-fileupload": "^1.5.1",
     "jsbarcode": "^3.11.6",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.9.3"
+    "mongoose": "^8.9.3",
+    "stripe": "^17.7.0"
   }
 }

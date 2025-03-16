@@ -1,5 +1,4 @@
 import Product from "../models/productModel.js";
-
 import Cart from "../models/cartSchema.js";
 
 // Add product to cart
@@ -102,4 +101,3 @@ export const removeCart = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-3;
