@@ -3,11 +3,13 @@ import { BaseUrl } from "../../config";
 
 const useAddToCart = () => {
   try{
-    const CartData = async ( token:string, productId:string|undefined) => {
+    const CartData = async ( token:string, productId:string|undefined, count:number) => {
       await axios
           .post(
             `${BaseUrl}/product/addToCart/${productId}`,
-            {},
+            {
+              quantity : count
+            },
             {
               headers: {
                 Authorization: `Bearer ${token}`,

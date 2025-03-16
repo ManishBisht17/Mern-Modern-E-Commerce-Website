@@ -38,7 +38,6 @@ const cartSlice = createSlice({
   name: "cartProducts",
   initialState,
   reducers: {
-    // You might want to add reducers for local updates
     clearCartError: (state) => {
       state.error = null;
     }
@@ -51,7 +50,9 @@ const cartSlice = createSlice({
       })
       .addCase(fetchCartData.fulfilled, (state, action) => {
         state.loading = false;
-        state.value = action.payload || { products: [] };
+        state.value = action.payload ? 
+          { ...action.payload, products: [...action.payload.products] } : 
+          { products: [] };
         state.error = null;
       })
       .addCase(fetchCartData.rejected, (state, action) => {
