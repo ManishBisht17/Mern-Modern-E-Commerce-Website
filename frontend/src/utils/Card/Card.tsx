@@ -4,7 +4,7 @@ const Card = ({ src, category, navigates }: { src: string; category: string; nav
   const navigate = useNavigate()
     return (
     <div onClick={()=>navigate(navigates)}>
-      <div className="h-[64vh] w-sm overflow-hidden rounded bg-red-300">
+      <div className="h-[72vh] w-sm overflow-hidden rounded bg-red-300">
         <img className="h-full w-full object-cover" src={src} alt="" />
       </div>
       <h1 className="text-center underline">{category}</h1>
