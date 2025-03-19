@@ -5,6 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 import adminRouter from "./router/adminRoute.js";
+import paymentRouter from "./router/stripeRoute.js";
 
 const app = express();
 
@@ -26,5 +27,6 @@ app.use(
 app.use("/user", userRouter);
 app.use("/product", productRouter);
 app.use("/admin", adminRouter);
+app.use("/payment", paymentRouter);
 
 export default app;
