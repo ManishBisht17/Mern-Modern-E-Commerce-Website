@@ -5,11 +5,10 @@ configDotenv();
 
 import mongodb from "./dataBase/db.js";
 const PORT = process.env.PORT || 5001;
-const server = express();
-server.use(express.json());
-server.use(app);
 
-server.listen(PORT, () => {
+app.use(express.json());
+
+app.listen(PORT, () => {
   console.log("Server is running  on 5000");
   mongodb();
 });
