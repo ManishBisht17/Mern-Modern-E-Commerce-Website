@@ -59,21 +59,21 @@ const Nav = () => {
                 }`}
               >
                 <h2
-                  onClick={() => navigate('/womens')}
+                  onClick={() => navigate("/womens")}
                   className="text-sm font-medium hover:text-gray-600 cursor-pointer"
                 >
                   WOMEN
                 </h2>
 
                 <h2
-                  onClick={() => navigate('/mens')}
+                  onClick={() => navigate("/mens")}
                   className="text-sm font-medium hover:text-gray-600 cursor-pointer"
                 >
                   MEN
                 </h2>
 
                 <h2
-                  onClick={() => navigate('/accessery')}
+                  onClick={() => navigate("/accessery")}
                   className="text-sm font-medium hover:text-gray-600 cursor-pointer"
                 >
                   ACCESSORIES
@@ -106,7 +106,7 @@ const Nav = () => {
                 }`}
               >
                 <Link to="/" className="text-xl font-serif">
-                  500 . Co
+                  E-Kart Section
                 </Link>
               </div>
 
@@ -136,19 +136,19 @@ const Nav = () => {
         <div className="md:hidden fixed top-16 left-0 w-full bg-white z-40 shadow-md transition-all duration-300 ease-in-out">
           <div className="flex flex-col px-4 py-2">
             <button
-              onClick={() => handleNavigation('/womens')}
+              onClick={() => handleNavigation("/womens")}
               className="py-3 text-left text-sm font-medium border-b border-gray-100"
             >
               WOMEN
             </button>
             <button
-              onClick={() => handleNavigation('/mens')}
+              onClick={() => handleNavigation("/mens")}
               className="py-3 text-left text-sm font-medium border-b border-gray-100"
             >
               MEN
             </button>
             <button
-              onClick={() => handleNavigation('/accessery')}
+              onClick={() => handleNavigation("/accessery")}
               className="py-3 text-left text-sm font-medium"
             >
               ACCESSORIES
