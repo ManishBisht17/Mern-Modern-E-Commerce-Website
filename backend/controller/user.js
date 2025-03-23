@@ -64,8 +64,8 @@ export const signup = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 60 * 60 * 1000 * 28, // 28 days
-      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // Protect against CSRF
+      // secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+      // sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // Protect against CSRF
     });
 
     // Return user data without password
@@ -73,7 +73,7 @@ export const signup = async (req, res) => {
       _id: newUser._id,
       name: newUser.name,
       email: newUser.email,
-      phone: newUser.phone
+      phone: newUser.phone,
     };
 
     res.status(201).json({
