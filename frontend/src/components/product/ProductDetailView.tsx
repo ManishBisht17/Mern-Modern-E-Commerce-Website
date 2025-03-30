@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../store/rootReducer";
 import Button from "../../utils/button/Button";
 import useAddToCart from "../customHook/useAddToCart";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from "framer-motion";
 
 interface productType {
   _id: string;
@@ -64,6 +64,7 @@ const ProductDetailView = () => {
       // Assuming this is the correct function to fetch product by ID
       // Added as a placeholder since it was in the original code but not defined
       // dispatch(fetchProductById(productId));
+      //
     }
   }, [productId, singleProductData]);
 
@@ -97,7 +98,7 @@ const ProductDetailView = () => {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.2, ease: 'easeIn' }}
+                  transition={{ duration: 0.2, ease: "easeIn" }}
                 >
                   <ProductImgCard photo={data.imageUrl[activeImageIndex]} />
                 </motion.div>
@@ -109,7 +110,9 @@ const ProductDetailView = () => {
           <div className="order-3 md:col-span-5 md:pr-4">
             <div className="md:h-[80vh] md:sticky md:top-20 md:pr-6 lg:pr-12">
               <h1 className="text-md font-light">{data?.category}</h1>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-light mt-2">{data?.name}</h1>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-light mt-2">
+                {data?.name}
+              </h1>
 
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center pt-4 gap-4 sm:gap-0">
                 <div className="flex">
@@ -120,8 +123,8 @@ const ProductDetailView = () => {
                         i < Math.floor(data?.ratings ?? 0)
                           ? "fill-yellow-400 text-yellow-400"
                           : i < (data?.ratings ?? 0)
-                            ? "fill-yellow-200 text-yellow-200"
-                            : "fill-gray-300 text-gray-300"
+                          ? "fill-yellow-200 text-yellow-200"
+                          : "fill-gray-300 text-gray-300"
                       }
                     />
                   ))}
@@ -136,7 +139,7 @@ const ProductDetailView = () => {
                 <h1 className="text-lg font-light">Size</h1>
                 <h4 className="text-md font-light">size chart</h4>
               </div>
-              
+
               <div className="flex flex-col gap-6 sm:gap-8">
                 <SizeSelectorBox />
 

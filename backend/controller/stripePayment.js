@@ -25,8 +25,8 @@ export const getCheckoutSession = async (req, res) => {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: "http://localhost:3000/success",
-      cancel_url: "http://localhost:3000/cancel",
+      success_url: "http://localhost:3000/s",
+      cancel_url: "http://localhost:3000/l",
     });
 
     res.status(200).json({ sessionId: session.id });
