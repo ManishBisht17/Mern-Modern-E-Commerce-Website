@@ -1,5 +1,6 @@
  <h1>🛒 MERN E-Commerce Site with Payment method</h1>
-An e-commerce web application built using the MERN (MongoDB, Express.js, React, Node.js) stack, featuring user authentication, product management, and secure payment processing.
+An e-commerce web application built using the MERN (MongoDB, Express.js, React, Node.js) stack, featuring user authentication, product management, and secure payment processing.   
+
 
 <h1>🚀 Features</h1>
 🔐 User Authentication (Login/Register with JWT)
