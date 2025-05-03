@@ -22,4 +22,4 @@ State Management: Redux Toolkit
 
 /backend  -> Express.js API (routes, controllers, models)  
 /frontend -> React app (components, pages, Redux state, customHook, axios, routing) 
- <h1>Deployed website ->  </h1>
+ <h1>Deployed website -> soon... </h1>
